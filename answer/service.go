@@ -1,6 +1,6 @@
 package answer
 
-import "../entity"
+import "teyake/entity"
 
 // AnswerService specifies customer Answer related service
 type AnswerService interface {
