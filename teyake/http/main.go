@@ -1,19 +1,20 @@
 package main
 
 import (
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"html/template"
 	"net/http"
 	"teyake/entity"
 	"teyake/teyake/http/handler"
 	userRepoImp "teyake/user/repository"
 	userServiceImp "teyake/user/service"
+
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
 func createTables(dbconn *gorm.DB) []error {
-	errs := dbconn.CreateTable(&entity.User{}, &entity.Role{}, &entity.Session{}).GetErrors()
+	errs := dbconn.CreateTable(&entity.Question{}, &entity.Answer{}).GetErrors()
 	if errs != nil {
 		return errs
 	}
@@ -21,17 +22,17 @@ func createTables(dbconn *gorm.DB) []error {
 }
 
 func main() {
-	dbconn, err := gorm.Open("postgres", "postgres://postgres:root@localhost/template1?sslmode=disable")
+	dbconn, err := gorm.Open("postgres", "postgres://postgres:yaredgir123@localhost/teyake?sslmode=disable")
 	defer dbconn.Close()
-	templ := template.Must(template.ParseGlob("ui/templates/*"))
-	fs := http.FileServer(http.Dir("ui/assets"))
+	templ := template.Must(template.ParseGlob("../../ui/templates/*"))
+	fs := http.FileServer(http.Dir("../../ui/assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
 	if err != nil {
 		panic(err)
 	}
 
-	//createTables(dbconn)
+	createTables(dbconn)
 	userRepo := userRepoImp.NewUserGormRepo(dbconn)
 	userService := userServiceImp.NewUserService(userRepo)
 	userHandler := handler.NewUserHandler(templ, userService)
