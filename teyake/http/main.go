@@ -14,7 +14,7 @@ import (
 )
 
 func createTables(dbconn *gorm.DB) []error {
-	errs := dbconn.CreateTable(&entity.Question{}, &entity.Answer{}).GetErrors()
+	errs := dbconn.CreateTable(&entity.User{}, &entity.Session{}, &entity.Role{}, &entity.Question{}, &entity.Answer{}).GetErrors()
 	if errs != nil {
 		return errs
 	}
@@ -22,7 +22,7 @@ func createTables(dbconn *gorm.DB) []error {
 }
 
 func main() {
-	dbconn, err := gorm.Open("postgres", "postgres://postgres:yaredgir123@localhost/teyake?sslmode=disable")
+	dbconn, err := gorm.Open("postgres", "postgres://postgres:root@localhost/teyake?sslmode=disable")
 	defer dbconn.Close()
 	templ := template.Must(template.ParseGlob("../../ui/templates/*"))
 	fs := http.FileServer(http.Dir("../../ui/assets"))
