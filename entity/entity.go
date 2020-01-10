@@ -22,21 +22,19 @@ type Session struct {
 	SigningKey []byte `gorm:"type:varchar(255);not null"`
 }
 
-
 type Question struct {
 	ID          uint
-	Title       string
-	Description string
-	Image       string
-	UserID      string
+	Title       string `gorm:"type:varchar(255);not null"`
+	Description string `gorm:"type:varchar(1000);not null"`
+	Image       string `gorm:"type:varchar(255)"`
+	UserID      string `gorm:"type:varchar(255);not null"`
 	CreatedAt   time.Time
-	Comments    [] Comment
+	Answers     []Answer
 }
 
-type Comment struct {
+type Answer struct {
 	ID        uint
-	UserID    string
-	Message   string
+	UserID    string `gorm:"type:varchar(1000);not null"`
+	Message   string `gorm:"type:varchar(1000);not null"`
 	CreatedAt time.Time
 }
-
