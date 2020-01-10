@@ -1,7 +1,7 @@
 package service
 
 import (
-	"../../entity"
+	"teyake/entity"
 )
 
 // AnswerService implements menu.AnswerService interface
