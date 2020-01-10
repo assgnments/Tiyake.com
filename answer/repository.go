@@ -1,6 +1,6 @@
 package answer
 
-import "../entity"
+import "teyake/entity"
 
 // AnswerRepository specifies customer Answer related database operations
 type AnswerRepository interface {
