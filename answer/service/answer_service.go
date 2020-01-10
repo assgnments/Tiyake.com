@@ -1,17 +1,17 @@
 package service
 
 import (
-	"teyake/entity"
 	"teyake/answer"
+	"teyake/entity"
 )
 
 // AnswerService implements menu.AnswerService interface
 type AnswerService struct {
-	AnswerRepo Answer.AnswerRepository
+	AnswerRepo answer.AnswerRepository
 }
 
 // NewAnswerService returns a new AnswerService object
-func NewAnswerService(commRepo Answer.AnswerRepository) Answer.AnswerService {
+func NewAnswerService(commRepo answer.AnswerRepository) answer.AnswerService {
 	return &AnswerService{AnswerRepo: commRepo}
 }
 

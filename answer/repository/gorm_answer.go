@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"teyake/entity"
 	"teyake/answer"
+	"teyake/entity"
+
 	"github.com/jinzhu/gorm"
 )
 
@@ -12,7 +13,7 @@ type AnswerGormRepo struct {
 }
 
 // NewAnswerGormRepo returns new object of AnswerGormRepo
-func NewAnswerGormRepo(db *gorm.DB) Answer.AnswerRepository {
+func NewAnswerGormRepo(db *gorm.DB) answer.AnswerRepository {
 	return &AnswerGormRepo{conn: db}
 }
 
