@@ -29,12 +29,13 @@ type Question struct {
 	Image       string `gorm:"type:varchar(255)"`
 	UserID      string `gorm:"type:varchar(255);not null"`
 	CreatedAt   time.Time
-	Answers     []Answer
+	Answers     []Answer `gorm:"foreignkey:QuestionID;association_foreignkey:ID"`
 }
 
 type Answer struct {
-	ID        uint
-	UserID    string `gorm:"type:varchar(1000);not null"`
-	Message   string `gorm:"type:varchar(1000);not null"`
-	CreatedAt time.Time
+	ID         uint
+	UserID     string `gorm:"type:varchar(1000);not null"`
+	Message    string `gorm:"type:varchar(1000);not null"`
+	QuestionID uint
+	CreatedAt  time.Time
 }
