@@ -32,7 +32,7 @@ func main() {
 		panic(err)
 	}
 
-	createTables(dbconn)
+	//createTables(dbconn)
 	userRepo := userRepoImp.NewUserGormRepo(dbconn)
 	userService := userServiceImp.NewUserService(userRepo)
 	userHandler := handler.NewUserHandler(templ, userService)
