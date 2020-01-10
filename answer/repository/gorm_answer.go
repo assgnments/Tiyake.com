@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"../../entity"
+	"teyake/entity"
 	"github.com/jinzhu/gorm"
 )
 
