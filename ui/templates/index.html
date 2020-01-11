@@ -1,9 +1,9 @@
 {{ define "index.layout" }}
 
-   {{ template "navbar.layout" .}}
-    {{range .}}
-        {{template "question.layout" . }}
+   {{ template "navbar.layout" .Categories}}
+    {{range .Questions}}
+        {{template "question.layout" .}}
     {{end}}
-    {{ template "footer.layout" . }}
+    {{ template "footer.layout"  }}
 
 {{ end }}

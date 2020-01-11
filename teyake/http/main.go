@@ -3,8 +3,11 @@ package main
 import (
 	"html/template"
 	"net/http"
+
 	"teyake/entity"
 
+	catRepoImp "teyake/category/repository"
+	catServiceImp "teyake/category/service"
 	quesRepoImp "teyake/question/repository"
 	quesServiceImp "teyake/question/service"
 	"teyake/teyake/http/handler"
@@ -53,15 +56,22 @@ func main() {
 
 	questionRepo := quesRepoImp.NewQuestionGormRepo(dbconn)
 	questionService := quesServiceImp.NewQuestionService(questionRepo)
+
+	categoryRepo:=catRepoImp.NewCategoryGormRepo(dbconn)
+	categoryService:=catServiceImp.NewCategoryService(categoryRepo)
 	//Uncomment the following lines after you created a fresh teyake db
 	//createTables(dbconn)
 	//roleServ.StoreRole(&entity.UserRoleMock)
 	//roleServ.StoreRole(&entity.AdminRoleMock)
 	//questionService.StoreQuestion(&entity.QuestionMock)
+	//categoryService.StoreCategory(&entity.CategoryMock1)
+	//categoryService.StoreCategory(&entity.CategoryMock2)
+	//categoryService.StoreCategory(&entity.CategoryMock3)
+
 
 
 	userHandler := handler.NewUserHandler(templ, userService, sessionService, roleServ, csrfSignKey)
-	indexHandler := handler.NewIndexHandler(templ,questionService)
+	indexHandler := handler.NewIndexHandler(templ,questionService,categoryService)
 	http.Handle("/",userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(indexHandler.Index))))
 	http.HandleFunc("/login", userHandler.Login)
 	http.HandleFunc("/signup", userHandler.SignUp)

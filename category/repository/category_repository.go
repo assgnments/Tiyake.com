@@ -7,10 +7,10 @@ import (
 )
 
 type CategoryGormRepo struct {
-	conn gorm.DB
+	conn *gorm.DB
 }
 
-func NewCategoryGormRepo(conn gorm.DB)  category.CategoryRepo{
+func NewCategoryGormRepo(conn *gorm.DB)  category.CategoryRepo{
 	return  CategoryGormRepo{conn:conn}
 }
 

@@ -10,6 +10,7 @@ type QuestionService struct {
 	QuestionRepo question.QuestionRepository
 }
 
+
 // NewQuestionService returns a new QuestionService object
 func NewQuestionService(commRepo question.QuestionRepository) question.QuestionService {
 	return &QuestionService{QuestionRepo: commRepo}
@@ -39,3 +40,7 @@ func (qs *QuestionService) DeleteQuestion(id uint) (*entity.Question, []error) {
 func (qs *QuestionService) StoreQuestion(Question *entity.Question) (*entity.Question, []error) {
 	return qs.QuestionRepo.StoreQuestion(Question)
 }
+func (qs *QuestionService) QuestionByCategory(categoryId uint) ([]entity.Question, []error) {
+	return qs.QuestionRepo.QuestionByCategory(categoryId)
+}
+

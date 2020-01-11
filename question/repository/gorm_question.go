@@ -12,6 +12,7 @@ type QuestionGormRepo struct {
 	conn *gorm.DB
 }
 
+
 // NewQuestionGormRepo returns new object of QuestionGormRepo
 func NewQuestionGormRepo(db *gorm.DB) question.QuestionRepository {
 	return &QuestionGormRepo{conn: db}
@@ -54,3 +55,9 @@ func (questionRepo *QuestionGormRepo) StoreQuestion(question *entity.Question) (
 	errs := questionRepo.conn.Create(question).GetErrors()
 	return question, errs
 }
+func (questionRepo *QuestionGormRepo) QuestionByCategory(categoryId uint) ([]entity.Question, []error) {
+	questions := []entity.Question{}
+	errs := questionRepo.conn.Find(&questions,"category_id=?",categoryId).GetErrors()
+	return questions, errs
+}
+
