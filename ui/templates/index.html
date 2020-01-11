@@ -1,6 +1,6 @@
 {{ define "index.layout" }}
 
-   {{ template "navbar.layout" }}
+   {{ template "navbar.layout" .}}
     {{range .}}
         {{template "question.layout" . }}
     {{end}}

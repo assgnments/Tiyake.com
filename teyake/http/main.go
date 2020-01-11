@@ -20,7 +20,7 @@ import (
 )
 
 func createTables(dbconn *gorm.DB) []error {
-	errs := dbconn.CreateTable(&entity.User{}, &entity.Session{}, &entity.Role{}, &entity.Question{}, &entity.Answer{}).GetErrors()
+	errs := dbconn.CreateTable(&entity.User{}, &entity.Session{}, &entity.Role{}, &entity.Question{}, &entity.Answer{},&entity.Category{}).GetErrors()
 	if errs != nil {
 		return errs
 	}
@@ -41,7 +41,7 @@ func main() {
 	//Create a new csrf signing key for forms
 	csrfSignKey := []byte(token.GenerateRandomID(32))
 
-	//createTables(dbconn)
+
 	userRepo := userRepoImp.NewUserGormRepo(dbconn)
 	userService := userServiceImp.NewUserService(userRepo)
 
@@ -53,6 +53,12 @@ func main() {
 
 	questionRepo := quesRepoImp.NewQuestionGormRepo(dbconn)
 	questionService := quesServiceImp.NewQuestionService(questionRepo)
+	//Uncomment the following lines after you created a fresh teyake db
+	//createTables(dbconn)
+	//roleServ.StoreRole(&entity.UserRoleMock)
+	//roleServ.StoreRole(&entity.AdminRoleMock)
+	//questionService.StoreQuestion(&entity.QuestionMock)
+
 
 	userHandler := handler.NewUserHandler(templ, userService, sessionService, roleServ, csrfSignKey)
 	indexHandler := handler.NewIndexHandler(templ,questionService)
