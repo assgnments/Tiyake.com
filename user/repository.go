@@ -3,18 +3,24 @@ package user
 import "teyake/entity"
 
 type UserRepository interface {
-	//user by id
 	User(id uint) (*entity.User,[]error)
-	//user create
 	StoreUser(user *entity.User) (*entity.User,[]error)
-	UserByEmail(email string) (*entity.User,[]error)
+	UserByEmail(email string) (*entity.User, [] error)
 
 }
 type RoleRepository interface {
-	//role by id
-	Role(id uint) (*entity.Role,[]error)
-	//role create
-	StoreRole(role *entity.Role) (*entity.Role,[]error)
-
+	Roles() ([]entity.Role, []error)
+	Role(id uint) (*entity.Role, []error)
+	RoleByName(name string) (*entity.Role, []error)
+	UpdateRole(role *entity.Role) (*entity.Role, []error)
+	DeleteRole(id uint) (*entity.Role, []error)
+	StoreRole(role *entity.Role) (*entity.Role, []error)
 }
+type SessionRepository interface {
+	Session(id uint) (*entity.Session, []error)
+	Sessions() ([]entity.Session, []error)
+	StoreSession(session *entity.Session) (*entity.Session, []error)
+	DeleteSession(id uint) (*entity.Session, []error)
+}
+
 

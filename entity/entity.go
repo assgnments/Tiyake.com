@@ -17,7 +17,7 @@ type User struct {
 
 type Session struct {
 	ID         uint
-	UUID       string `gorm:"type:varchar(255);not null"`
+	UUID       uint
 	Expires    int64  `gorm:"type:varchar(255);not null"`
 	SigningKey []byte `gorm:"type:varchar(255);not null"`
 }
