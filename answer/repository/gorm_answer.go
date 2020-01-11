@@ -18,9 +18,9 @@ func NewAnswerGormRepo(db *gorm.DB) answer.AnswerRepository {
 }
 
 // Answers returns all customer Answers stored in the database
-func (cmntRepo *AnswerGormRepo) Answers() ([]entity.Answer, []error) {
+func (ansRepo *AnswerGormRepo) Answers() ([]entity.Answer, []error) {
 	cmnts := []entity.Answer{}
-	errs := cmntRepo.conn.Find(&cmnts).GetErrors()
+	errs := ansRepo.conn.Find(&cmnts).GetErrors()
 	if len(errs) > 0 {
 		return nil, errs
 	}
@@ -28,46 +28,32 @@ func (cmntRepo *AnswerGormRepo) Answers() ([]entity.Answer, []error) {
 }
 
 // Answer retrieves a customer Answer from the database by its id
-func (cmntRepo *AnswerGormRepo) Answer(id uint) (*entity.Answer, []error) {
+func (ansRepo *AnswerGormRepo) Answer(id uint) (*entity.Answer, []error) {
 	cmnt := entity.Answer{}
-	errs := cmntRepo.conn.First(&cmnt, id).GetErrors()
-	if len(errs) > 0 {
-		return nil, errs
-	}
+	errs := ansRepo.conn.First(&cmnt, id).GetErrors()
 	return &cmnt, errs
 }
 
 // UpdateAnswer updates a given customer Answer in the database
-func (cmntRepo *AnswerGormRepo) UpdateAnswer(Answer *entity.Answer) (*entity.Answer, []error) {
-	cmnt := Answer
-	errs := cmntRepo.conn.Save(cmnt).GetErrors()
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return cmnt, errs
+func (ansRepo *AnswerGormRepo) UpdateAnswer(answer *entity.Answer) (*entity.Answer, []error) {
+	errs := ansRepo.conn.Save(answer).GetErrors()
+	return answer, errs
 }
 
 // DeleteAnswer deletes a given customer Answer from the database
-func (cmntRepo *AnswerGormRepo) DeleteAnswer(id uint) (*entity.Answer, []error) {
-	cmnt, errs := cmntRepo.Answer(id)
+func (ansRepo *AnswerGormRepo) DeleteAnswer(id uint) (*entity.Answer, []error) {
+	cmnt, errs := ansRepo.Answer(id)
 
 	if len(errs) > 0 {
 		return nil, errs
 	}
-
-	errs = cmntRepo.conn.Delete(cmnt, id).GetErrors()
-	if len(errs) > 0 {
-		return nil, errs
-	}
+	errs = ansRepo.conn.Delete(cmnt, id).GetErrors()
 	return cmnt, errs
 }
 
 // StoreAnswer stores a given customer Answer in the database
-func (cmntRepo *AnswerGormRepo) StoreAnswer(Answer *entity.Answer) (*entity.Answer, []error) {
+func (ansRepo *AnswerGormRepo) StoreAnswer(Answer *entity.Answer) (*entity.Answer, []error) {
 	cmnt := Answer
-	errs := cmntRepo.conn.Create(cmnt).GetErrors()
-	if len(errs) > 0 {
-		return nil, errs
-	}
+	errs := ansRepo.conn.Create(cmnt).GetErrors()
 	return cmnt, errs
 }
