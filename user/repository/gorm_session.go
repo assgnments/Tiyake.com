@@ -19,9 +19,9 @@ func NewSessionGormRepo(db *gorm.DB) user.SessionRepository {
 }
 
 // Session returns a given stored session
-func (sr *SessionGormRepo) Session(ID uint) (*entity.Session, []error) {
+func (sr *SessionGormRepo) Session(sessionId string) (*entity.Session, []error) {
 	session := entity.Session{}
-	errs := sr.conn.Find(&session,ID).GetErrors()
+	errs := sr.conn.Find(&session,sessionId).GetErrors()
 	return &session, errs
 }
 
@@ -40,11 +40,11 @@ func (sr *SessionGormRepo) StoreSession(session *entity.Session) (*entity.Sessio
 }
 
 // DeleteSession deletes a given session
-func (sr *SessionGormRepo) DeleteSession(ID uint) (*entity.Session, []error) {
-	sess, errs := sr.Session(ID)
+func (sr *SessionGormRepo) DeleteSession(sessionId string) (*entity.Session, []error) {
+	sess, errs := sr.Session(sessionId)
 	if len(errs) > 0 {
 		return nil, errs
 	}
-	errs = sr.conn.Delete(sess, ID).GetErrors()
+	errs = sr.conn.Delete(sess, sessionId).GetErrors()
 	return sess, errs
 }

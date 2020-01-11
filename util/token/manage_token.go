@@ -2,50 +2,44 @@ package token
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"time"
 )
 
 // CustomClaims specifies custom claims
 type CustomClaims struct {
-	Email string `json:"email"`
+	SessionId string `json:"sessionId"`
 	jwt.StandardClaims
 }
-// Claims returns claims used for generating jwt tokens
-//Expires after a month for debugging
-func Claims(email string,) jwt.Claims {
+
+//NewClaims returns claims used for generating jwt tokens
+func NewClaims(sessionId string,expire int64) jwt.Claims {
 	return CustomClaims{
-		email,
+		sessionId,
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().AddDate(0,1,0).Unix(),
+			ExpiresAt: expire,
 		},
 	}
 }
 
-// Generate generates jwt token
-func GenerateJWTClaim(signingKey []byte, claims jwt.Claims) (string, error) {
+// Generates jwt token
+func Generate(signingKey []byte, claims jwt.Claims) (string, error) {
 	tn := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	signedString, err := tn.SignedString(signingKey)
 	return signedString, err
 }
 
-// Valid validates a given token
-func ValidateToken(signedToken string, signingKey []byte) (bool, error) {
-	token, err := jwt.ParseWithClaims(signedToken, &CustomClaims{}, func(token *jwt.Token) (interface{}, error) {
-		return signingKey, nil
-	})
 
-	if err != nil {
-		return false, err
+///Validate, parse, returns claim
+func GetSessionIdFromToken(tkn string,keyFunc jwt.Keyfunc) string{
+	token,err:=jwt.Parse(tkn,keyFunc)
+	if err!=nil{
+		return ""
 	}
-
-	if _, ok := token.Claims.(*CustomClaims); !ok || !token.Valid {
-		return false, err
+	sessionId:= token.Claims.(jwt.MapClaims)["sessionId"].(string)
+	if !token.Valid {
+		return ""
 	}
-
-	return true, nil
+	return sessionId
 }
-
-
 
 // CSRFToken Generates random string for CSRF
 func CSRFToken(signingKey []byte) (string, error) {

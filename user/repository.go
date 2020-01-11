@@ -17,10 +17,10 @@ type RoleRepository interface {
 	StoreRole(role *entity.Role) (*entity.Role, []error)
 }
 type SessionRepository interface {
-	Session(id uint) (*entity.Session, []error)
+	Session(sessionId string) (*entity.Session, []error)
 	Sessions() ([]entity.Session, []error)
 	StoreSession(session *entity.Session) (*entity.Session, []error)
-	DeleteSession(id uint) (*entity.Session, []error)
+	DeleteSession(sessionId string ) (*entity.Session, []error)
 }
 
 

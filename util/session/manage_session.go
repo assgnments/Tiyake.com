@@ -9,17 +9,18 @@ import (
 	"time"
 )
 
-
-const SessionKey="session_key"
+const SessionKey = "session_key"
 
 func NewSession(id uint) *entity.Session {
 	//Expires after a month for debugging
-	tokenExpires := time.Now().AddDate(0,1,0).Unix()
+	tokenExpires := time.Now().AddDate(0, 1, 0).Unix()
 	signingString, err := token.GenerateRandomString(32)
+	sessionId, err := token.GenerateRandomString(32)
 	if err != nil {
 		panic(err)
 	}
 	return &entity.Session{
+		SessionId:  sessionId,
 		Expires:    tokenExpires,
 		SigningKey: []byte(signingString),
 		UUID:       id,
@@ -27,44 +28,29 @@ func NewSession(id uint) *entity.Session {
 }
 
 // Create creates and sets sessionId cookie and sessionValueCookie
-func SetCookies(claims jwt.Claims, sessionID uint, signingKey []byte, w http.ResponseWriter) {
-	signedString, err := token.GenerateJWTClaim(signingKey, claims)
+func SetCookies(claims jwt.Claims, expire int64, signingKey []byte, w http.ResponseWriter) {
+	signedString, err := token.Generate(signingKey, claims)
 	if err != nil {
 		fmt.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 	}
-	sessionIdCookie := http.Cookie{
+	cookie := http.Cookie{
 		Name:     SessionKey,
-		Value:    string(sessionID),
+		Value:    signedString,
 		HttpOnly: true,
-	}
-	sessionValueCookie:=http.Cookie{
-		Name:  string(sessionID),
-		Value: signedString,
-		HttpOnly:true,
+		Expires:  time.Unix(expire, 0),
 	}
 
-	http.SetCookie(w, &sessionIdCookie)
-	http.SetCookie(w, &sessionValueCookie)
+	http.SetCookie(w, &cookie)
 }
 
-
-// Remove expires existing cookies
-func RemoveCookies(sessionID uint, w http.ResponseWriter) {
-	sessionIdCookie := http.Cookie{
-		Name:     SessionKey,
+// Remove expires existing session
+func RemoveCookies(w http.ResponseWriter) {
+	cookie := http.Cookie{
+		Name:    SessionKey,
 		Value:   "",
 		Expires: time.Unix(1, 0),
 		MaxAge:  -1,
 	}
-	sessionValueCookie:=http.Cookie{
-		Name:  string(sessionID),
-		Value:   "",
-		HttpOnly:true,
-		Expires: time.Unix(1, 0),
-		MaxAge:  -1,
-	}
-
-	http.SetCookie(w, &sessionIdCookie)
-	http.SetCookie(w, &sessionValueCookie)
+	http.SetCookie(w, &cookie)
 }

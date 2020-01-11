@@ -19,8 +19,8 @@ type RoleService interface {
 }
 // SessionService specifies logged in user session related service
 type SessionService interface {
-	Session(id uint) (*entity.Session, []error)
+	Session(sessionId string) (*entity.Session, []error)
 	Sessions() ([]entity.Session, []error)
 	StoreSession(session *entity.Session) (*entity.Session, []error)
-	DeleteSession(id uint) (*entity.Session, []error)
+	DeleteSession(sessionId string ) (*entity.Session, []error)
 }

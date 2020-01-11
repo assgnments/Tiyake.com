@@ -17,8 +17,8 @@ func NewSessionService(sessRepository user.SessionRepository) user.SessionServic
 }
 
 // Session returns a given stored session
-func (ss *SessionServiceImpl) Session(sessionID uint) (*entity.Session, []error) {
-	return ss.sessionRepo.Session(sessionID)
+func (ss *SessionServiceImpl) Session(sessionId string) (*entity.Session, []error) {
+	return ss.sessionRepo.Session(sessionId)
 }
 // Returns all the sessions
 func (ss *SessionServiceImpl) Sessions() ([]entity.Session, []error) {
@@ -31,6 +31,6 @@ func (ss *SessionServiceImpl) StoreSession(session *entity.Session) (*entity.Ses
 }
 
 // DeleteSession deletes a given session
-func (ss *SessionServiceImpl) DeleteSession(sessionID uint) (*entity.Session, []error) {
-	return  ss.sessionRepo.DeleteSession(sessionID)
+func (ss *SessionServiceImpl) DeleteSession(sessionId string) (*entity.Session, []error) {
+	return  ss.sessionRepo.DeleteSession(sessionId)
 }
