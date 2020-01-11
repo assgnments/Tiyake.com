@@ -7,6 +7,7 @@ import (
 	"teyake/teyake/http/handler"
 	userRepoImp "teyake/user/repository"
 	userServiceImp "teyake/user/service"
+	"teyake/util"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm"
@@ -22,7 +23,7 @@ func createTables(dbconn *gorm.DB) []error {
 }
 
 func main() {
-	dbconn, err := gorm.Open("postgres", "postgres://postgres:root@localhost/teyake?sslmode=disable")
+	dbconn, err := gorm.Open("postgres", util.DBConnectString)
 	defer dbconn.Close()
 	templ := template.Must(template.ParseGlob("../../ui/templates/*"))
 	fs := http.FileServer(http.Dir("../../ui/assets"))

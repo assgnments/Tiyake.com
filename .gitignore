@@ -1,0 +1,3 @@
+#Ignore database connect string (DBConnectString) in util
+
+util/db.go
