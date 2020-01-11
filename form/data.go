@@ -10,6 +10,7 @@ var EmailRX = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9
 type Input struct {
 	Values  url.Values
 	VErrors VaildationErros
+	CSFR string
 }
 
 func (in *Input) ValidateRequiredFields(fields ...string) {

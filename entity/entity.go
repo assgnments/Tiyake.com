@@ -1,14 +1,16 @@
 package entity
 
-import "time"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type Role struct {
-	ID   uint
+	gorm.Model
 	Name string `gorm:"type:varchar(255)"`
 }
 
 type User struct {
-	ID       uint
+	gorm.Model
 	FullName string `gorm:"type:varchar(255);not null"`
 	Email    string `gorm:"type:varchar(255);not null;unique"`
 	Password string `gorm:"type:varchar(255)"`
@@ -16,7 +18,7 @@ type User struct {
 }
 
 type Session struct {
-	ID         uint
+	gorm.Model
 	UUID       uint
 	SessionId  string `gorm:"type:varchar(255);not null"`
 	Expires    int64  `gorm:"type:varchar(255);not null"`
@@ -24,20 +26,18 @@ type Session struct {
 }
 
 type Question struct {
-	ID          uint
+	gorm.Model
 	Title       string `gorm:"type:varchar(255);not null"`
 	Description string `gorm:"type:varchar(1000);not null"`
 	Image       string `gorm:"type:varchar(255)"`
-	UserID      string `gorm:"type:varchar(255);not null"`
-	CreatedAt   time.Time
-	Answers     []Answer `gorm:"one2many:answer"`
+	UserID      uint
+	Answers     []Answer
 }
 
 type Answer struct {
-	ID         uint
-	UserID     string `gorm:"type:varchar(1000);not null"`
+	gorm.Model
+	UserID     uint
+	UpVoters   []User `gorm:"many2many:user;"`
 	Message    string `gorm:"type:varchar(1000);not null"`
 	QuestionID uint
-	UpVotersID []uint
-	CreatedAt  time.Time
 }

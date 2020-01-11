@@ -21,7 +21,7 @@ func NewSessionGormRepo(db *gorm.DB) user.SessionRepository {
 // Session returns a given stored session
 func (sr *SessionGormRepo) Session(sessionId string) (*entity.Session, []error) {
 	session := entity.Session{}
-	errs := sr.conn.Find(&session,sessionId).GetErrors()
+	errs := sr.conn.Find(&session,"session_id=?",sessionId).GetErrors()
 	return &session, errs
 }
 

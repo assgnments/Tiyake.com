@@ -1,16 +1,10 @@
 {{ define "index.layout" }}
 
-    {{ template "navbar" . }}
-{{/*    {{ template "index.content" . }}*/}}
-    {{template "question.layout" . }}
-    {{template "question.layout" . }}
-    {{template "question.layout" . }}
-    {{ template "footer" . }}
+   {{ template "navbar.layout" . }}
+    {{range .}}
+        {{template "question.layout" . }}
+    {{end}}
+    {{ template "footer.layout" . }}
 
 {{ end }}
 
-{{/*{{ define "index.content" }}*/}}
-
-{{/*    */}}
-
-{{/*{{end}}*/}}

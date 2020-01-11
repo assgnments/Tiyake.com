@@ -42,7 +42,7 @@ func GetSessionIdFromToken(tkn string,keyFunc jwt.Keyfunc) string{
 }
 
 // CSRFToken Generates random string for CSRF
-func CSRFToken(signingKey []byte) (string, error) {
+func NewCSRFToken(signingKey []byte) (string, error) {
 	tn := jwt.New(jwt.SigningMethodHS256)
 	signedString, err := tn.SignedString(signingKey)
 	if err != nil {
@@ -52,14 +52,14 @@ func CSRFToken(signingKey []byte) (string, error) {
 }
 
 // ValidCSRF checks if a given csrf token is valid
-func ValidCSRF(signedToken string, signingKey []byte) (bool, error) {
+func ISValidCSRF(signedToken string, signingKey []byte) bool {
 	token, err := jwt.Parse(signedToken, func(token *jwt.Token) (interface{}, error) {
 		return signingKey, nil
 	})
 
 	if err != nil || !token.Valid {
-		return false, err
+		return false
 	}
 
-	return true, nil
+	return true
 }
