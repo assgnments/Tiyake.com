@@ -29,7 +29,7 @@ type Question struct {
 	Image       string `gorm:"type:varchar(255)"`
 	UserID      string `gorm:"type:varchar(255);not null"`
 	CreatedAt   time.Time
-	Answers     []Answer `gorm:"foreignkey:QuestionID;association_foreignkey:ID"`
+	Answers     []Answer `gorm:"one2many:answer"`
 }
 
 type Answer struct {
@@ -37,5 +37,6 @@ type Answer struct {
 	UserID     string `gorm:"type:varchar(1000);not null"`
 	Message    string `gorm:"type:varchar(1000);not null"`
 	QuestionID uint
+	UpVotersID []uint
 	CreatedAt  time.Time
 }

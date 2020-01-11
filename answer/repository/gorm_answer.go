@@ -52,8 +52,7 @@ func (ansRepo *AnswerGormRepo) DeleteAnswer(id uint) (*entity.Answer, []error) {
 }
 
 // StoreAnswer stores a given customer Answer in the database
-func (ansRepo *AnswerGormRepo) StoreAnswer(Answer *entity.Answer) (*entity.Answer, []error) {
-	cmnt := Answer
-	errs := ansRepo.conn.Create(cmnt).GetErrors()
-	return cmnt, errs
+func (ansRepo *AnswerGormRepo) StoreAnswer(answer *entity.Answer) (*entity.Answer, []error) {
+	errs := ansRepo.conn.Create(answer).GetErrors()
+	return answer, errs
 }
