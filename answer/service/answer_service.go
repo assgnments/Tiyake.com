@@ -16,27 +16,27 @@ func NewAnswerService(commRepo answer.AnswerRepository) answer.AnswerService {
 }
 
 // Answers returns all stored Answers
-func (cs *AnswerService) Answers() ([]entity.Answer, []error) {
-	return cs.AnswerRepo.Answers()
+func (as *AnswerService) Answers() ([]entity.Answer, []error) {
+	return as.AnswerRepo.Answers()
 }
 
 // Answer retrieves stored Answer by its id
-func (cs *AnswerService) Answer(id uint) (*entity.Answer, []error) {
-	return cs.AnswerRepo.Answer(id)
+func (as *AnswerService) Answer(id uint) (*entity.Answer, []error) {
+	return as.AnswerRepo.Answer(id)
 }
 
 // UpdateAnswer updates a given Answer
-func (cs *AnswerService) UpdateAnswer(Answer *entity.Answer) (*entity.Answer, []error) {
-	return cs.AnswerRepo.UpdateAnswer(Answer)
+func (as *AnswerService) UpdateAnswer(Answer *entity.Answer) (*entity.Answer, []error) {
+	return as.AnswerRepo.UpdateAnswer(Answer)
 }
 
 // DeleteAnswer deletes a given Answer
-func (cs *AnswerService) DeleteAnswer(id uint) (*entity.Answer, []error) {
-	return cs.AnswerRepo.DeleteAnswer(id)
+func (as *AnswerService) DeleteAnswer(id uint) (*entity.Answer, []error) {
+	return as.AnswerRepo.DeleteAnswer(id)
 }
 
 // StoreAnswer stores a given Answer
-func (cs *AnswerService) StoreAnswer(Answer *entity.Answer) (*entity.Answer, []error) {
-	return  cs.AnswerRepo.StoreAnswer(Answer)
+func (as *AnswerService) StoreAnswer(Answer *entity.Answer) (*entity.Answer, []error) {
+	return  as.AnswerRepo.StoreAnswer(Answer)
 
 }

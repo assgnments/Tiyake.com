@@ -16,46 +16,26 @@ func NewQuestionService(commRepo question.QuestionRepository) question.QuestionS
 }
 
 // Questions returns all stored Questions
-func (cs *QuestionService) Questions() ([]entity.Question, []error) {
-	cmnts, errs := cs.QuestionRepo.Questions()
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return cmnts, errs
+func (qs *QuestionService) Questions() ([]entity.Question, []error) {
+	return qs.QuestionRepo.Questions()
 }
 
 // Question retrieves stored Question by its id
-func (cs *QuestionService) Question(id uint) (*entity.Question, []error) {
-	cmnt, errs := cs.QuestionRepo.Question(id)
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return cmnt, errs
+func (qs *QuestionService) Question(id uint) (*entity.Question, []error) {
+	return qs.QuestionRepo.Question(id)
 }
 
 // UpdateQuestion updates a given Question
-func (cs *QuestionService) UpdateQuestion(Question *entity.Question) (*entity.Question, []error) {
-	cmnt, errs := cs.QuestionRepo.UpdateQuestion(Question)
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return cmnt, errs
+func (qs *QuestionService) UpdateQuestion(Question *entity.Question) (*entity.Question, []error) {
+	return qs.QuestionRepo.UpdateQuestion(Question)
 }
 
 // DeleteQuestion deletes a given Question
-func (cs *QuestionService) DeleteQuestion(id uint) (*entity.Question, []error) {
-	cmnt, errs := cs.QuestionRepo.DeleteQuestion(id)
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return cmnt, errs
+func (qs *QuestionService) DeleteQuestion(id uint) (*entity.Question, []error) {
+	return qs.QuestionRepo.DeleteQuestion(id)
 }
 
 // StoreQuestion stores a given Question
-func (cs *QuestionService) StoreQuestion(Question *entity.Question) (*entity.Question, []error) {
-	cmnt, errs := cs.QuestionRepo.StoreQuestion(Question)
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return cmnt, errs
+func (qs *QuestionService) StoreQuestion(Question *entity.Question) (*entity.Question, []error) {
+	return qs.QuestionRepo.StoreQuestion(Question)
 }

@@ -18,56 +18,39 @@ func NewQuestionGormRepo(db *gorm.DB) question.QuestionRepository {
 }
 
 // Questions returns all customer Questions stored in the database
-func (cmntRepo *QuestionGormRepo) Questions() ([]entity.Question, []error) {
-	cmnts := []entity.Question{}
-	errs := cmntRepo.conn.Find(&cmnts).GetErrors()
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return cmnts, errs
+func (questionRepo *QuestionGormRepo) Questions() ([]entity.Question, []error) {
+	questions := []entity.Question{}
+	errs := questionRepo.conn.Find(&questions).GetErrors()
+	return questions, errs
 }
 
 // Question retrieves a customer Question from the database by its id
-func (cmntRepo *QuestionGormRepo) Question(id uint) (*entity.Question, []error) {
-	cmnt := entity.Question{}
-	errs := cmntRepo.conn.First(&cmnt, id).GetErrors()
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return &cmnt, errs
+func (questionRepo *QuestionGormRepo) Question(id uint) (*entity.Question, []error) {
+	question := entity.Question{}
+	errs := questionRepo.conn.First(&question, id).GetErrors()
+	return &question, errs
 }
 
 // UpdateQuestion updates a given customer Question in the database
-func (cmntRepo *QuestionGormRepo) UpdateQuestion(Question *entity.Question) (*entity.Question, []error) {
-	cmnt := Question
-	errs := cmntRepo.conn.Save(cmnt).GetErrors()
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return cmnt, errs
+func (questionRepo *QuestionGormRepo) UpdateQuestion(question *entity.Question) (*entity.Question, []error) {
+	errs := questionRepo.conn.Save(question).GetErrors()
+	return question, errs
 }
 
 // DeleteQuestion deletes a given customer Question from the database
-func (cmntRepo *QuestionGormRepo) DeleteQuestion(id uint) (*entity.Question, []error) {
-	cmnt, errs := cmntRepo.Question(id)
+func (questionRepo *QuestionGormRepo) DeleteQuestion(id uint) (*entity.Question, []error) {
+	question, errs := questionRepo.Question(id)
 
 	if len(errs) > 0 {
 		return nil, errs
 	}
 
-	errs = cmntRepo.conn.Delete(cmnt, id).GetErrors()
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return cmnt, errs
+	errs = questionRepo.conn.Delete(question, id).GetErrors()
+	return question, errs
 }
 
 // StoreQuestion stores a given customer Question in the database
-func (cmntRepo *QuestionGormRepo) StoreQuestion(Question *entity.Question) (*entity.Question, []error) {
-	cmnt := Question
-	errs := cmntRepo.conn.Create(cmnt).GetErrors()
-	if len(errs) > 0 {
-		return nil, errs
-	}
-	return cmnt, errs
+func (questionRepo *QuestionGormRepo) StoreQuestion(question *entity.Question) (*entity.Question, []error) {
+	errs := questionRepo.conn.Create(question).GetErrors()
+	return question, errs
 }
