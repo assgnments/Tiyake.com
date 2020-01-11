@@ -31,7 +31,13 @@ type Question struct {
 	Description string `gorm:"type:varchar(1000);not null"`
 	Image       string `gorm:"type:varchar(255)"`
 	UserID      uint
+	CategoryID  uint
 	Answers     []Answer
+}
+
+type Category struct {
+	gorm.Model
+	Name string `gorm:"type:varchar(255);not null"`
 }
 
 type Answer struct {
