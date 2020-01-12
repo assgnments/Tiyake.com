@@ -12,8 +12,20 @@ type permission struct {
 type authority map[string]permission
 
 var authorities = authority{
+	"/": permission{
+		roles:   []string{"USER","ADMIN"},
+		methods: []string{"POST","GET"},
+	},
+	"/question": permission{
+		roles:   []string{"USER","ADMIN"},
+		methods: []string{"POST","GET"},
+	},
+	"/question/new": permission{
+		roles:   []string{"USER"},
+		methods: []string{"POST","GET"},
+	},
 	"/logout": permission{
-		roles:   []string{"USER,ADMIN"},
+		roles:   []string{"USER","ADMIN"},
 		methods: []string{"POST"},
 	},
 	"/admin": permission{

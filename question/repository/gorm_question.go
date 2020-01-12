@@ -21,14 +21,14 @@ func NewQuestionGormRepo(db *gorm.DB) question.QuestionRepository {
 // Questions returns all customer Questions stored in the database
 func (questionRepo *QuestionGormRepo) Questions() ([]entity.Question, []error) {
 	questions := []entity.Question{}
-	errs := questionRepo.conn.Find(&questions).GetErrors()
+	errs := questionRepo.conn.Set("gorm:auto_preload", true).Find(&questions).GetErrors()
 	return questions, errs
 }
 
 // Question retrieves a customer Question from the database by its id
 func (questionRepo *QuestionGormRepo) Question(id uint) (*entity.Question, []error) {
 	question := entity.Question{}
-	errs := questionRepo.conn.First(&question, id).GetErrors()
+	errs := questionRepo.conn.Set("gorm:auto_preload", true).First(&question, id).GetErrors()
 	return &question, errs
 }
 

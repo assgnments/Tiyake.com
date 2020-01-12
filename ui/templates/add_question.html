@@ -1,0 +1,48 @@
+{{ define "add_question.layout" }}
+
+    {{ template "navbar.layout"}}
+    {{ template "add_question.context" . }}
+    {{ template "footer.layout"}}
+
+{{ end }}
+
+{{define "add_question.context"}}
+    <div class="container">
+        <div class="form-group row">
+            <form method="POST" action="/question/new" enctype="multipart/form-data">
+
+                <label for="question_title" class="col-sm-2 col-form-label">Question Title</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="question_title" id="question_title"
+                           value={{.FormInput.Values.Get "question_title" }}>
+                </div>
+                <label for="question_description" class="col-sm-2 col-form-label">Description</label>
+
+
+                <div class="col-sm-10">
+                        <textarea class="form-control"
+                                  name="question_description"
+                                  id="question_description" rows="3"
+                                  value={{.FormInput.Values.Get "question_description" }}>
+
+
+                        </textarea>
+                </div>
+
+                <label for="questionImagekey" class="col-sm-2 col-form-label">Upload Image</label>
+                <div class="col-sm-10">
+                    <input type="file" class="form-control-file" name="questionImagekey" id="questionImagekey">
+                </div>
+                <select name='category' id='category' class='form-control'>
+                    <option value='' disabled selected>Choose A Category</option>
+                    {{ range .Categories }}
+                        <option value='{{ .ID }}'> {{ .Name }}</option>
+                    {{ end }}
+                </select>
+                <input style="visibility: hidden" type="text" name="csfrKey" value={{.FormInput.CSFR}}>
+                <button type="submit" class="btn btn-primary">Submit</button>
+
+            </form>
+        </div>
+    </div>
+{{end}}

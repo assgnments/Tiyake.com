@@ -1,0 +1,57 @@
+{{ define "question.detail.layout" }}
+    {{ template "navbar.layout" }}
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-12">
+                {{with .Question}}
+                    <h1 class="mt-4">{{.Title}}</h1>
+
+                    <p class="lead">
+                        by
+                        <span>{{.User.FullName}}</span>
+                    </p>
+
+
+
+                    {{with .Image}}
+                        {{if ne . ""}}
+                            <hr>
+
+                            <img class="img-fluid rounded" src="../assets/img/{{ . }}" alt="Image">
+                        {{end}}
+                    {{end}}
+
+                    <hr>
+                    <p class="lead">{{.Description}}</p>
+
+                    <hr>
+                    <p>{{readableDate .CreatedAt}}</p>
+                {{end}}
+                <div class="card my-4">
+                    <h5 class="card-header">Leave a Comment:</h5>
+                    <div class="card-body">
+                        <form action="/question?id={{.Question.ID}}" method="post">
+                            <input style="visibility: hidden" type="text" name="csfrKey" value={{.FormInput.CSFR}}>
+                            <div class="form-group">
+                                <textarea name="answer" class="form-control" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+                {{range .Question.Answers}}
+                    <div class="media mb-4">
+                        <div class="media-body">
+                            <h5 class="mt-0">{{.User.FullName}}</h5>
+                            {{.Message}}
+                            <p>{{readableDate .CreatedAt}}</p>
+                        </div>
+                    </div>
+                {{end}}
+
+            </div>
+
+        </div>
+    </div>
+{{end}}

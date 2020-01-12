@@ -31,8 +31,9 @@ type Question struct {
 	Description string `gorm:"type:varchar(1000);not null"`
 	Image       string `gorm:"type:varchar(255)"`
 	UserID      uint
-	CategoryID  uint
-	Answers     []Answer
+	CategoryID uint
+	User       User `gorm:"many2many:user;"`
+	Answers    []Answer
 }
 
 type Category struct {
@@ -43,7 +44,7 @@ type Category struct {
 type Answer struct {
 	gorm.Model
 	UserID     uint
-	UpVoters   []User `gorm:"many2many:user;"`
+	User       User `gorm:"many2many:user;"`
 	Message    string `gorm:"type:varchar(1000);not null"`
 	QuestionID uint
 }

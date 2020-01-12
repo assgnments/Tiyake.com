@@ -18,7 +18,7 @@ import (
 const fullnameKey = "fullname"
 const passwordKey = "password"
 const emailKey = "email"
-const csfrKey = "csfrKey"
+
 const ctxUserSessionKey = "signed_in_user_session"
 
 type UserHandler struct {
@@ -107,14 +107,14 @@ func (userHandler *UserHandler) Authorized(next http.Handler) http.Handler {
 		role, errs := userHandler.roleService.Role(user.RoleID)
 
 		//Check if the user role is authorized to access the specific path and method requested
-		if len(errs) > 0 || permission.HasPermission(role.Name, r.URL.Path, r.Method) {
+		if len(errs) > 0 || !permission.HasPermission(role.Name, r.URL.Path, r.Method) {
 			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 			return
 		}
 
 		//Check the validity of signed token inside the form if the form is post
 		if r.Method == http.MethodPost {
-			if token.ISValidCSRF(r.FormValue(csfrKey), userHandler.csrfSignKey) {
+			if !token.ISValidCSRF(r.FormValue(util.CSFRKey), userHandler.csrfSignKey) {
 				http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 				return
 			}
@@ -125,8 +125,9 @@ func (userHandler *UserHandler) Authorized(next http.Handler) http.Handler {
 
 func (userHandler *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 	//If it's requesting the login page return CSFR Signed token with the form
+	CSFRToken, err := token.NewCSRFToken(userHandler.csrfSignKey)
 	if r.Method == http.MethodGet {
-		CSFRToken, err := token.NewCSRFToken(userHandler.csrfSignKey)
+
 		if err != nil {
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		}
@@ -136,11 +137,12 @@ func (userHandler *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//Only reply to forms that have that are parsable and have valid csfrToken
-	if userHandler.isParsableFormPost(w, r) {
+	if util.IsParsableFormPost(w, r,userHandler.csrfSignKey) {
 
 		//Validate form data
 		loginForm := form.Input{Values: r.PostForm, VErrors: form.VaildationErros{}}
 		loginForm.ValidateRequiredFields(emailKey, passwordKey)
+		loginForm.CSFR=CSFRToken
 		email := r.FormValue(emailKey)
 		password := r.FormValue(passwordKey)
 		user, errs := userHandler.userService.UserByEmail(email)
@@ -179,8 +181,9 @@ func (userHandler *UserHandler) Logout(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
 func (userHandler *UserHandler) SignUp(w http.ResponseWriter, r *http.Request) {
+	CSFRToken, err := token.NewCSRFToken(userHandler.csrfSignKey)
 	if r.Method == http.MethodGet {
-		CSFRToken, err := token.NewCSRFToken(userHandler.csrfSignKey)
+
 		if err != nil {
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		}
@@ -189,13 +192,13 @@ func (userHandler *UserHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//Only reply to forms that have that are parsable and have valid csfrToken
-	if userHandler.isParsableFormPost(w, r) {
+	if util.IsParsableFormPost(w, r,userHandler.csrfSignKey) {
 		///Validate the form data
 		signUpForm := form.Input{Values: r.PostForm, VErrors: form.VaildationErros{}}
 		signUpForm.ValidateRequiredFields(fullnameKey, emailKey, passwordKey)
 		signUpForm.ValidateEmail(emailKey)
 		signUpForm.ValidatePassword(passwordKey)
-
+		signUpForm.CSFR=CSFRToken
 		if !signUpForm.IsValid() {
 			userHandler.tmpl.ExecuteTemplate(w, "signup.layout", signUpForm)
 			return
@@ -237,11 +240,7 @@ func (userHandler *UserHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (userHandler *UserHandler) isParsableFormPost(w http.ResponseWriter, r *http.Request) bool {
-	return r.Method == http.MethodPost &&
-		util.ParseForm(w, r) &&
-		token.ISValidCSRF(r.FormValue(csfrKey), userHandler.csrfSignKey)
-}
+
 func (userHandler *UserHandler) Index(w http.ResponseWriter, r *http.Request) {
 	userHandler.tmpl.ExecuteTemplate(w, "index.layout", nil)
 }

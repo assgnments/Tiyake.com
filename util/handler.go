@@ -1,7 +1,10 @@
 package util
 
-import "net/http"
-
+import (
+	"net/http"
+	"teyake/util/token"
+)
+const CSFRKey = "csfrKey"
 func ParseForm(w http.ResponseWriter,r *http.Request) bool{
 	err := r.ParseForm()
 	if err != nil {
@@ -9,4 +12,9 @@ func ParseForm(w http.ResponseWriter,r *http.Request) bool{
 		return false
 	}
 	return true
+}
+func  IsParsableFormPost(w http.ResponseWriter, r *http.Request,csrfSignKey []byte,) bool {
+	return r.Method == http.MethodPost &&
+		ParseForm(w, r) &&
+		token.ISValidCSRF(r.FormValue(CSFRKey), csrfSignKey)
 }

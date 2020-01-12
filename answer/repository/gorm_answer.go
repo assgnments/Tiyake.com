@@ -30,7 +30,7 @@ func (ansRepo *AnswerGormRepo) Answers() ([]entity.Answer, []error) {
 // Answer retrieves a customer Answer from the database by its id
 func (ansRepo *AnswerGormRepo) Answer(id uint) (*entity.Answer, []error) {
 	cmnt := entity.Answer{}
-	errs := ansRepo.conn.First(&cmnt, id).GetErrors()
+	errs := ansRepo.conn.Set("gorm:auto_preload", true).First(&cmnt, id).GetErrors()
 	return &cmnt, errs
 }
 
