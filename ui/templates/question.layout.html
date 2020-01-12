@@ -1,16 +1,16 @@
 {{define "question.layout"}}
-    <a href="/question?id={{.ID}}" style="color:inherit;text-decoration: none">
+    <a  href="/question?id={{.ID}}" style="color:inherit;text-decoration: none">
         <div class="w-100 col-lg-12">
-            <div class="card mt-3">
+            <div id="question_layout_css" class="card mt-3" style="border-radius: 10px;">
                 {{/*                            <img class="card-img-top" src="http://placehold.it/1051x180" alt="Card image cap">*/}}
                 {{with .Image}}
                     {{if ne . ""}}
-                        <img class="w-auto h-auto img-fluid" src="../assets/img/{{.}}" alt="Image">
+                        <img style="border-radius: .25rem .25rem 0rem 0rem !important;" class="w-auto h-auto img-fluid" src="../assets/img/{{.}}" alt="Image">
                     {{end}}
                 {{end}}
-                <div class="card-body">
-                    <h5 class="card-title">{{.User.FullName}}</h5>
-                    <p class="card-text">{{.Title}}
+                <div class="card-body rounded">
+                    <h3 class="card-text">{{.Title}}</h3>
+                    <p class="card-text">by {{.User.FullName}}</p>
                     <p class="card-text"><small class="text-muted">{{.Description}}</small></p>
                     <p class="card-text"><small class="text-muted">{{readableDate .CreatedAt}}</small></p>
                     <p class="card-text"><small class="text-muted">{{len .Answers}} Answers</small></p>

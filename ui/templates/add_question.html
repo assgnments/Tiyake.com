@@ -7,42 +7,99 @@
 {{ end }}
 
 {{define "add_question.context"}}
-    <div class="container">
-        <div class="form-group row">
-            <form method="POST" action="/question/new" enctype="multipart/form-data">
-
-                <label for="question_title" class="col-sm-2 col-form-label">Question Title</label>
-                <div class="col-sm-10">
-                    <input type="text" class="form-control" name="question_title" id="question_title"
-                           value={{.FormInput.Values.Get "question_title" }}>
-                </div>
-                <label for="question_description" class="col-sm-2 col-form-label">Description</label>
 
 
-                <div class="col-sm-10">
-                        <textarea class="form-control"
-                                  name="question_description"
-                                  id="question_description" rows="3"
-                                  value={{.FormInput.Values.Get "question_description" }}>
+{{/*    <div class="container">*/}}
+{{/*        <div class="form-group row">*/}}
+{{/*            <form method="POST" action="/question/new" enctype="multipart/form-data">*/}}
+
+{{/*                <label for="question_title" class="col-sm-2 col-form-label">Question Title</label>*/}}
+
+{{/*                <div class="col-sm-10">*/}}
+{{/*                    <input type="text" class="form-control" name="question_title" id="question_title"*/}}
+{{/*                           value={{.FormInput.Values.Get "question_title" }}>*/}}
+{{/*                </div>*/}}
+{{/*                <label for="question_description" class="col-sm-2 col-form-label">Description</label>*/}}
 
 
-                        </textarea>
-                </div>
+{{/*                <div class="col-sm-10">*/}}
+{{/*                        <textarea class="form-control"*/}}
+{{/*                                  name="question_description"*/}}
+{{/*                                  id="question_description" rows="3"*/}}
+{{/*                                  value={{.FormInput.Values.Get "question_description" }}>*/}}
 
-                <label for="questionImagekey" class="col-sm-2 col-form-label">Upload Image</label>
-                <div class="col-sm-10">
-                    <input type="file" class="form-control-file" name="questionImagekey" id="questionImagekey">
-                </div>
-                <select name='category' id='category' class='form-control'>
-                    <option value='' disabled selected>Choose A Category</option>
+
+{{/*                        </textarea>*/}}
+{{/*                </div>*/}}
+
+{{/*                <label for="questionImagekey" class="col-sm-2 col-form-label">Upload Image</label>*/}}
+{{/*                <div class="col-sm-10">*/}}
+{{/*                    <input type="file" class="form-control-file" name="questionImagekey" id="questionImagekey">*/}}
+{{/*                </div>*/}}
+{{/*                <select name='category' id='category' class='form-control'>*/}}
+{{/*                    <option value='' disabled selected>Choose A Category</option>*/}}
+{{/*                    {{ range .Categories }}*/}}
+{{/*                        <option value='{{ .ID }}'> {{ .Name }}</option>*/}}
+{{/*                    {{ end }}*/}}
+{{/*                </select>*/}}
+{{/*                <input style="visibility: hidden" type="text" name="csfrKey" value={{.FormInput.CSFR}}>*/}}
+{{/*                <button type="submit" class="btn btn-primary">Submit</button>*/}}
+
+{{/*            </form>*/}}
+{{/*        </div>*/}}
+{{/*    </div>*/}}
+
+
+
+
+
+
+
+
+
+<div class="row">
+    <div class="col-lg"></div>
+    <div class="p-3 bg-white col-lg-6" id="addquestion_form_container">
+        <form method="POST" action="/question/new" enctype="multipart/form-data" id="addquestion_form">
+            <div class="form-group">
+                <input type="text" id="question_title" name="question_title"
+                       class="form-control rounded-0 border-top-0 border-right-0 border-left-0" placeholder="Title"
+                       required="" value={{.FormInput.Values.Get "question_title" }}>
+            </div>
+
+            <div class="form-group">
+                <textarea rows="6" id="question_description" name="question_description"
+                          class="form-control rounded-0 border-top-0 border-right-0 border-left-0"
+                          placeholder="Description" required=""
+                          value={{.FormInput.Values.Get "question_description" }}></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="questionImagekey" class="btn btn-outline-primary">
+                <input type="file" name="questionImagekey"
+                       id="questionImagekey" style="display: none">
+                    Attach Image
+                </label>
+            </div>
+            <div class="form-group">
+                <select name="category" id="category" class="btn form-group btn-outline-primary">
+                    <option value='' disabled selected hidden>Choose A Category</option>
+                    <option class="drpdwn_item" value='' hidden disabled selected>Category</option>
                     {{ range .Categories }}
-                        <option value='{{ .ID }}'> {{ .Name }}</option>
-                    {{ end }}
-                </select>
-                <input style="visibility: hidden" type="text" name="csfrKey" value={{.FormInput.CSFR}}>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                        <option class="m-3 p-3 drpdwn_item h5" value='{{ .ID }}'> {{ .Name }}</option>
 
-            </form>
-        </div>
+                    {{ end }}
+
+                </select>
+            </div>
+
+            <input style="visibility: hidden" type="text" name="csfrKey" value={{.FormInput.CSFR}}>
+
+            <div class="form-group text-right">
+                <button type="submit" class="btn btn-primary">Publish</button>
+            </div>
+        </form>
     </div>
+    <div class="col-lg"></div>
+</div>
 {{end}}

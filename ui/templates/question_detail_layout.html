@@ -29,7 +29,7 @@
                     <p>{{readableDate .CreatedAt}}</p>
                 {{end}}
                 <div class="card my-4">
-                    <h5 class="card-header">Leave a Comment:</h5>
+                    <h5 class="card-header">Leave an Answer:</h5>
                     <div class="card-body">
                         <form action="/question?id={{.Question.ID}}" method="post">
                             <input style="visibility: hidden" type="text" name="csfrKey" value={{.FormInput.CSFR}}>
