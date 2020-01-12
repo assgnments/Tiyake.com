@@ -1,0 +1,308 @@
+.mediaViewInfo {
+	--web-view-name: Sign Up;
+	--web-view-id: Sign_Up;
+	--web-center-horizontally: true;
+	--web-enable-deep-linking: true;
+}
+:root {
+	--web-view-ids: Sign_Up;
+}
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	border: none;
+}
+body{
+	background:#c3c4cc81;
+}
+.Sign_Up_Class {
+	position: absolute;
+	transform: translateX(-50%);
+	left: 50%;
+	width: 871px;
+	height: 100rem;
+	background-color: rgba(255,255,255,1);
+	overflow: hidden;
+	--web-view-name: Sign Up;
+	--web-view-id: Sign_Up;
+	--web-center-horizontally: true;
+	--web-enable-deep-linking: true;
+}
+.Sign_Up_n_Class {
+	position: absolute;
+	width: 781.237px;
+	height: 639px;
+	left: 0px;
+	top: 80px;
+	overflow: visible;
+}
+.Background_Class {
+	position: absolute;
+	width: 366px;
+	height: 639px;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+}
+.Body_Class {
+	position: absolute;
+	width: 325.237px;
+	height: 391.871px;
+	left: 456px;
+	top: 123.565px;
+	overflow: visible;
+}
+
+.Content_Class {
+	position: absolute;
+	width: 325.237px;
+	height: 391.871px;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+}
+.Terms_Class {
+	position: absolute;
+	left: 63.374px;
+	top: 381.871px;
+	overflow: visible;
+	width: 164px;
+	white-space: nowrap;
+	text-align: left;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 7px;
+	color: rgba(160,160,160,1);
+}
+.Sign_Up_Button_Class {
+	cursor: pointer;
+	position: absolute;
+	width: 325.237px;
+	height: 41.692px;
+	left: 0px;
+	top: 321.65px;
+	overflow: visible;
+}
+.Sign_Up_Background {
+	position: absolute;
+	overflow: visible;
+	width: 325.237px;
+	height: 41.692px;
+	left: 0px;
+	top: 0px;
+}
+.Sign_Up_u_Class {
+	position: absolute;
+	left: 140px;
+	top: 12.35px;
+	overflow: visible;
+	width: 45px;
+	white-space: nowrap;
+	line-height: 14px;
+	margin-top: -1px;
+	text-align: center;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 12px;
+	color: rgba(255,255,255,1);
+	letter-spacing: 0.25px;
+}
+
+.User_Info_Class {
+	position: absolute;
+	width: 325.237px;
+	height: 182.75px;
+	left: 0px;
+	top: 121.203px;
+	overflow: visible;
+}
+.Password_Class {
+	position: absolute;
+	width: 325.237px;
+	height: 51.22px;
+	left: 0px;
+	top: 131.53px;
+	overflow: visible;
+}
+.Password_Hint {
+	position: absolute;
+	overflow: visible;
+	width: 325.237px;
+	height: 32.285px;
+	left: 0px;
+	top: 18.936px;
+}
+.Password_y_Class {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+	width: 40px;
+	white-space: nowrap;
+	line-height: 30px;
+	margin-top: -10.5px;
+	text-align: left;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 9px;
+	color: rgba(153,153,153,1);
+	letter-spacing: 0.25px;
+}
+.Email_Class {
+	position: absolute;
+	width: 325.237px;
+	height: 51.22px;
+	left: 0px;
+	top: 65.765px;
+	overflow: visible;
+}
+.Email_Background {
+	position: absolute;
+	overflow: visible;
+	width: 325.237px;
+	height: 33.48px;
+	left: 0px;
+	top: 17.74px;
+}
+.Email__Class {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+	width: 21px;
+	white-space: nowrap;
+	line-height: 27px;
+	margin-top: -9.5px;
+	text-align: left;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 8px;
+	color: rgba(153,153,153,1);
+	letter-spacing: 0.25px;
+}
+.Email_Hint_Class {
+	opacity: 0.45;
+	overflow: hidden;
+	padding-left: 5px;
+	white-space: nowrap;
+	line-height: 27px;
+	text-align: left;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	color: rgba(0,0,0,1);
+	letter-spacing: 0.25px;
+}
+
+.First_Name_Class {
+	position: absolute;
+	width: 325.237px;
+	height: 50.025px;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+}
+.First_Name_Background {
+	position: absolute;
+	overflow: visible;
+	width: 325.237px;
+	height: 32.285px;
+	left: 0px;
+	top: 17.74px;
+}
+.First_Name__Class {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+	width: 41px;
+	white-space: nowrap;
+	line-height: 27px;
+	margin-top: -9.5px;
+	text-align: left;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 8px;
+	color: rgba(153,153,153,1);
+	letter-spacing: 0.25px;
+}
+.First_Name_Hint_Class {
+	opacity: 0.45;
+	overflow: hidden;
+	padding-left: 5px;
+	white-space: nowrap;
+	line-height: 27px;
+	text-align: left;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	color: rgba(0,0,0,1);
+	letter-spacing: 0.25px;
+}
+.Login_Class {
+	position: absolute;
+	left: 77.939px;
+	top: 53.235px;
+	overflow: visible;
+	width: 163px;
+	white-space: nowrap;
+	line-height: 37px;
+	margin-top: -13px;
+	text-align: left;
+	font-family: Roboto;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 11px;
+	color: rgba(153,153,153,1);
+	letter-spacing: 0.25px;
+}
+.Logo_Class {
+	position: absolute;
+	width: 202px;
+	height: 51px;
+	left: 63px;
+	top: 0px;
+	overflow: visible;
+}
+.Logo_Text_Class {
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	overflow: visible;
+	width: 203px;
+	white-space: nowrap;
+	text-align: left;
+	font-family: Segoe UI;
+	font-style: normal;
+	font-weight: bold;
+	font-size: 38px;
+	color: rgba(0,0,0,1);
+}
+.Blue_Dot {
+	position: absolute;
+	overflow: visible;
+	width: 10px;
+	height: 9px;
+	left: 111px;
+	top: 27px;
+}
+.Blue_Dot_bf {
+	position: absolute;
+	overflow: visible;
+	width: 10px;
+	height: 9px;
+	left: 25px;
+	top: 7px;
+}
+
+.text-danger{
+	color: Red;
+}

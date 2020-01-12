@@ -1,0 +1,15 @@
+{{ define "index.layout" }}
+
+   {{ template "navbar.layout" .Categories}}
+    {{range .Questions}}
+        {{template "question.layout" .}}
+    {{end}}
+    {{ template "footer.layout"  }}
+
+{{ end }}
+
+{{/*{{ define "index.content" }}*/}}
+
+{{/*    */}}
+
+{{/*{{end}}*/}}
