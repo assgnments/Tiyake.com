@@ -1,0 +1,66 @@
+{{define "admin.users.layout"}}
+{{template "admin.navbar.layout" .}}
+{{template "admin.users.content" .}}
+{{template "admin.footer.layout" .}}
+{{end}}
+
+{{define "admin.users.content"}}
+<p class="h3 pl-2">Users</p>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Add User</button>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form class="p-3">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" class="form-control" id="name" >
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" >
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="text" class="form-control" id="password" >
+                </div>
+                <div class="form-group">
+                    <label for="role">Role ID</label>
+                    <input type="number" class="form-control" id="role" >
+                </div>
+                <button type="submit" class="btn-lg btn-primary float-lg-right">Add</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped ml-3 mt-3">
+    <thead>
+    <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Full Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Password</th>
+        <th scope="col">Role ID</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {{.Users}}
+    <tr>
+        <td>{{.ID}}</td>
+        <td>{{.FullName}}</td>
+        <td>{{.Email}}</td>
+        <td>{{.Password}}</td>
+        <td>{{.Role}}</td>
+        <td><a href="#">Edit</a></td>
+        <td><a href="#">Delete</a></td>
+    </tr>
+
+
+    </tbody>
+</table>
+{{end}}
