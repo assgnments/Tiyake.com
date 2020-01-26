@@ -5,6 +5,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"html/template"
 	"net/http"
+	"strings"
 	"teyake/entity"
 	"teyake/form"
 	"teyake/user"
@@ -103,6 +104,7 @@ func (userHandler *UserHandler) Authorized(next http.Handler) http.Handler {
 			http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 			return
 		}
+
 		///Get the role of the user
 		role, errs := userHandler.roleService.Role(user.RoleID)
 
@@ -137,12 +139,12 @@ func (userHandler *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//Only reply to forms that have that are parsable and have valid csfrToken
-	if util.IsParsableFormPost(w, r,userHandler.csrfSignKey) {
+	if util.IsParsableFormPost(w, r, userHandler.csrfSignKey) {
 
 		//Validate form data
 		loginForm := form.Input{Values: r.PostForm, VErrors: form.VaildationErros{}}
 		loginForm.ValidateRequiredFields(emailKey, passwordKey)
-		loginForm.CSFR=CSFRToken
+		loginForm.CSFR = CSFRToken
 		email := r.FormValue(emailKey)
 		password := r.FormValue(passwordKey)
 		user, errs := userHandler.userService.UserByEmail(email)
@@ -165,9 +167,23 @@ func (userHandler *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 		//Save session Id in cookies
 		session.SetCookies(claims, newSession.Expires, newSession.SigningKey, w)
 
-		//Finally open the home page for the user
+		//Check if user is an admin
+		roles, errs := userHandler.userService.UserRoles(user)
+		if userHandler.checkAdmin(roles) {
+			http.Redirect(w, r, "/admin", http.StatusSeeOther)
+		}
+
+		////Finally open the home page for the user
 		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
+}
+func (userHandler *UserHandler) checkAdmin(roles []entity.Role) bool {
+	for _, role := range roles {
+		if strings.ToUpper(role.Name) == strings.ToUpper("Admin") {
+			return true
+		}
+	}
+	return false
 }
 
 // Logout logout requests
@@ -187,18 +203,18 @@ func (userHandler *UserHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		}
-		userHandler.tmpl.ExecuteTemplate(w, "signup.layout", form.Input{CSFR:CSFRToken})
+		userHandler.tmpl.ExecuteTemplate(w, "signup.layout", form.Input{CSFR: CSFRToken})
 
 		return
 	}
 	//Only reply to forms that have that are parsable and have valid csfrToken
-	if util.IsParsableFormPost(w, r,userHandler.csrfSignKey) {
+	if util.IsParsableFormPost(w, r, userHandler.csrfSignKey) {
 		///Validate the form data
 		signUpForm := form.Input{Values: r.PostForm, VErrors: form.VaildationErros{}}
 		signUpForm.ValidateRequiredFields(fullnameKey, emailKey, passwordKey)
 		signUpForm.ValidateEmail(emailKey)
 		signUpForm.ValidatePassword(passwordKey)
-		signUpForm.CSFR=CSFRToken
+		signUpForm.CSFR = CSFRToken
 		if !signUpForm.IsValid() {
 			userHandler.tmpl.ExecuteTemplate(w, "signup.layout", signUpForm)
 			return
@@ -240,7 +256,11 @@ func (userHandler *UserHandler) SignUp(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
 func (userHandler *UserHandler) Index(w http.ResponseWriter, r *http.Request) {
 	userHandler.tmpl.ExecuteTemplate(w, "index.layout", nil)
+}
+
+func (userHandler *UserHandler) Admin(w http.ResponseWriter, r *http.Request) {
+
+	userHandler.tmpl.ExecuteTemplate(w, "admin.index.layout", nil)
 }

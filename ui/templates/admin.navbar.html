@@ -1,3 +1,4 @@
+{{ define "admin.navbar.layout" }}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,25 +9,62 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title>Tiyake.com | Admin</title>
 
 
-    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../assets/css/bootstrap-grid.min.css" rel="stylesheet">
-
-    <link href="../assets/css/admin.navbar.css" rel="stylesheet">
+    <link href="/../assets/css/bootstrap.min.css"  rel="stylesheet">
+    <link href="/../assets/css/bootstrap-grid.min.css" rel="stylesheet">
 
 </head>
+<style>
+    .bg-light {
+        background-color: #eeeeee !important;
+    }
 
-<body>
+    th {cursor: pointer}
 
-<div class="d-flex" id="wrapper">
+    .form-control {
+        padding: 20px;
+        margin: 10px;
+        display: block;
+        width: 100%;
+        height: calc(1.5em + .75rem + 2px);
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #495057;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: .25rem;
+        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
 
-    <div class="bg-light border-right" id="sidebar-wrapper">
+    .drpdwn_item {
+        background-color: white !important;
+        color: #007bff !important;
+    }
+
+    #form_container {
+        border-radius: 30px;
+        margin-top: 12vh;
+        margin-bottom: 13.2vh;
+    }
+
+    #form_admin > .form-group {
+        padding: 5px;
+    }
+</style>
+<body class="bg-light">
+
+<div class="d-flex" id="wrapper" style="height: 100%!important;">
+
+    <div class="bg-light border-right " id="sidebar-wrapper">
         <div class="sidebar-heading">Tiyake.com</div>
         <div class="list-group list-group-flush">
-            <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">Users</a>
+            <a href="/admin" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+            <a href="/admin/users" class="list-group-item list-group-item-action bg-light">Users</a>
             <a href="#" class="list-group-item list-group-item-action bg-light">Questions</a>
             <a href="#" class="list-group-item list-group-item-action bg-light">Answers</a>
             <a href="#" class="list-group-item list-group-item-action bg-light">Categories</a>
@@ -37,58 +75,7 @@
     <div id="page-content-wrapper">
         {{/*end navbar*/}}
 
+{{end}}
 
 
 
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-            Launch demo modal
-        </button>
-
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <form>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-
-
-
-
-        {{/*        footer*/}}
-    </div>
-
-</div>
-
-<script src="../assets/js/bootstrap.min.js"></script>
-<script src="../assets/js/jquery-3.4.1.min.js"></script>
-
-
-{{/*incase we decide to make the sidebar hide*/}}
-{{/*<script>*/}}
-{{/*    $("#menu-toggle").click(function(e) {*/}}
-{{/*        e.preventDefault();*/}}
-{{/*        $("#wrapper").toggleClass("toggled");*/}}
-{{/*    });*/}}
-{{/*</script>*/}}
-
-</body>
-
-</html>

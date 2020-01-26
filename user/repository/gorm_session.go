@@ -11,8 +11,6 @@ type SessionGormRepo struct {
 	conn *gorm.DB
 }
 
-
-
 // NewSessionGormRepo  returns a new SessionGormRepo object
 func NewSessionGormRepo(db *gorm.DB) user.SessionRepository {
 	return &SessionGormRepo{conn: db}
@@ -21,7 +19,7 @@ func NewSessionGormRepo(db *gorm.DB) user.SessionRepository {
 // Session returns a given stored session
 func (sr *SessionGormRepo) Session(sessionId string) (*entity.Session, []error) {
 	session := entity.Session{}
-	errs := sr.conn.Find(&session,"session_id=?",sessionId).GetErrors()
+	errs := sr.conn.Find(&session, "session_id=?", sessionId).GetErrors()
 	return &session, errs
 }
 
@@ -45,6 +43,6 @@ func (sr *SessionGormRepo) DeleteSession(sessionId string) (*entity.Session, []e
 	if len(errs) > 0 {
 		return nil, errs
 	}
-	errs = sr.conn.Delete(sess, sessionId).GetErrors()
+	errs = sr.conn.Delete(sess, "session_id=?", sessionId).GetErrors()
 	return sess, errs
 }

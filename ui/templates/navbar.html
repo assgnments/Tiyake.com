@@ -1,30 +1,39 @@
 {{ define "navbar.layout" }}
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="en" xmlns="">
 
     <head>
         <title>Tiyake.com</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- css -->
-        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-        <link rel="stylesheet" href="../assets/css/bootstrap-grid.min.css">
+        <link rel="stylesheet" href="/../assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/../assets/css/bootstrap-grid.min.css">
 
     </head>
+    <script>
+        function fileSelect(e) {
+            document.getElementById("image_name").innerHTML = e.target.files[0].name;
+        }
+    </script>
     <style>
-        .bg-light{
+        .bg-light {
             background-color: #eeeeee !important;
         }
-        .nav-cont:nth-child(1){
+
+        .nav-cont:nth-child(1) {
             margin-top: 8.012vh;
         }
-        #question_layout_css:hover{
-            box-shadow: 0 0 10px rgba(0,0,0,.2);
+
+        #question_layout_css:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, .2);
         }
-        .btn-outline-primary:hover{
+
+        .btn-outline-primary:hover {
             color: white !important;
         }
-        .form-control{
+
+        .form-control {
             padding: 20px;
             margin: 10px;
             display: block;
@@ -39,24 +48,29 @@
             background-clip: padding-box;
             border: 1px solid #ced4da;
             border-radius: .25rem;
-            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
         }
-        .drpdwn_item{
+
+        .drpdwn_item {
             background-color: white !important;
-            color: #007bff!important;
+            color: #007bff !important;
         }
-        footer{
-            box-shadow: 0 0 8px 0 rgba(0,0,0,.2);
+
+        footer {
+            box-shadow: 0 0 8px 0 rgba(0, 0, 0, .2);
         }
-        nav{
-            box-shadow: 0 0 8px 0 rgba(0,0,0,.2);
+
+        nav {
+            box-shadow: 0 0 8px 0 rgba(0, 0, 0, .2);
         }
-        #addquestion_form_container{
+
+        #addquestion_form_container {
             border-radius: 30px;
             margin-top: 12vh;
             margin-bottom: 13.2vh;
         }
-        #addquestion_form>.form-group{
+
+        #addquestion_form > .form-group {
             padding: 5px;
         }
     </style>
@@ -70,31 +84,37 @@
                             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="col-lg"></div>
+                    <div class="collapse navbar-collapse col-lg-7" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
                                 <a class="nav-link" href="/">
-{{/*                                    <img src="../assets/img/logo.png"*/}}
-{{/*                                         srcset="../assets/img/logo.png 1x, ../assets/img/logo@2x.png 2x">*/}}
-                                Home</a>
+                                    {{/*                                    <img src="../assets/img/logo.png"*/}}
+                                    {{/*                                         srcset="../assets/img/logo.png 1x, ../assets/img/logo@2x.png 2x">*/}}
+                                    Home</a>
                             </li>
                             {{range .}}
 
-                            <li class="nav-item">
-                                <a class="nav-link text-primary" href="/?cat={{.ID}}">{{.Name}}</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-primary" href="/?cat={{.ID}}">{{.Name}}</a>
+                                </li>
 
                             {{end}}
                         </ul>
 
-                        <form method="GET" action="/question/new" class="form-inline mt-2 mt-md-0" style="margin-right: 15px;">
-                            <button class="btn btn-outline-primary text-primary my-2 my-sm-0" type="submit">Publish Question</button>
+                        <form method="GET" action="/question/new" class="form-inline mt-2 mt-md-0"
+                              style="margin-right: 15px;">
+                            <button class="btn btn-outline-primary text-primary my-2 my-sm-0" type="submit">Publish
+                                Question
+                            </button>
                         </form>
                         <form method="POST" action="/logout" class="form-inline mt-2 mt-md-0">
-{{/*                            <input type="hidden" name="csrf" value="{{ .CSRF }}"/>*/}}
-                            <button class="btn btn-outline-primary text-primary my-2 my-sm-0" type="submit">Logout</button>
+                            {{/*                            <input type="hidden" name="csrf" value="{{ .CSRF }}"/>*/}}
+                            <button class="btn btn-outline-primary text-primary my-2 my-sm-0" type="submit">Logout
+                            </button>
                         </form>
                     </div>
+                    <div class="col-lg"></div>
                 </nav>
 
 {{ end }}

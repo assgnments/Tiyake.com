@@ -1,0 +1,38 @@
+{{define "admin.users.layout"}}
+{{template "admin.navbar.layout" .}}
+{{template "admin.users.content" .}}
+{{template "admin.footer.layout" .}}
+{{end}}
+
+{{define "admin.users.content"}}
+<p class="h3 pl-2">Users</p>
+
+<table class="table table-striped ml-3 mt-3" id="table">
+    <thead>
+    <tr>
+        <th onclick="sortTable(0)" scope="col">ID</th>
+        <th onclick="sortTable(1)" scope="col">Full Name</th>
+        <th onclick="sortTable(2)" scope="col">Email</th>
+        <th onclick="sortTable(3)" scope="col">Password</th>
+        <th onclick="sortTable(4)" scope="col">Role ID</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {{range .Users}}
+    <tr>
+        <td>{{.ID}}</td>
+        <td>{{.FullName}}</td>
+        <td>{{.Email}}</td>
+        <td>{{.Password}}</td>
+        <td>{{.RoleID}}</td>
+        <td><a href="/admin/users/update?id={{.ID}}">Edit</a></td>
+        <td><a href="/admin/users/delete?id={{.ID}}">Delete</a></td>
+    </tr>
+    {{end}}
+
+    </tbody>
+</table>
+{{end}}

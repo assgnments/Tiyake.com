@@ -4,15 +4,14 @@ import (
 	"html/template"
 	"net/http"
 
-
 	"teyake/entity"
 
-	catRepoImp "teyake/category/repository"
 	ansRepoImp "teyake/answer/repository"
+	ansServiceImp "teyake/answer/service"
+	catRepoImp "teyake/category/repository"
 	catServiceImp "teyake/category/service"
 	quesRepoImp "teyake/question/repository"
 	quesServiceImp "teyake/question/service"
-	ansServiceImp "teyake/answer/service"
 	"teyake/teyake/http/handler"
 	userRepoImp "teyake/user/repository"
 	userServiceImp "teyake/user/service"
@@ -26,17 +25,27 @@ import (
 )
 
 func createTables(dbconn *gorm.DB) []error {
-	errs := dbconn.CreateTable(&entity.User{}, &entity.Session{}, &entity.Role{}, &entity.Question{}, &entity.Answer{},&entity.Category{}).GetErrors()
+	errs := dbconn.CreateTable(&entity.User{}, &entity.Session{}, &entity.Role{}, &entity.Question{}, &entity.Answer{}, &entity.Category{}).GetErrors()
 	if errs != nil {
 		return errs
 	}
 	return nil
 }
 
+//type justFilesFilesystem struct {
+//	fs http.FileSystem
+//}
+//func (fs justFilesFilesystem) Open(name string)(http.File,error){
+//	f,err := fs.fs.Open(name)
+//	if err!=nil{
+//		return nil,err
+//	}
+//	return newreaddir{f},nil
+//}
 func main() {
 	dbconn, err := gorm.Open("postgres", util.DBConnectString)
 	defer dbconn.Close()
-	templ:=template.Must(template.New("main").Funcs(util.AvailableFuncMaps).ParseGlob("ui/templates/*"))
+	templ := template.Must(template.New("main").Funcs(util.AvailableFuncMaps).ParseGlob("ui/templates/*"))
 	fs := http.FileServer(http.Dir("ui/assets"))
 	http.Handle("/assets/", http.StripPrefix("/assets/", fs))
 
@@ -46,7 +55,6 @@ func main() {
 
 	//Create a new csrf signing key for forms
 	csrfSignKey := []byte(token.GenerateRandomID(32))
-
 
 	userRepo := userRepoImp.NewUserGormRepo(dbconn)
 	userService := userServiceImp.NewUserService(userRepo)
@@ -60,12 +68,13 @@ func main() {
 	questionRepo := quesRepoImp.NewQuestionGormRepo(dbconn)
 	questionService := quesServiceImp.NewQuestionService(questionRepo)
 
-	categoryRepo:=catRepoImp.NewCategoryGormRepo(dbconn)
-	categoryService:=catServiceImp.NewCategoryService(categoryRepo)
+	categoryRepo := catRepoImp.NewCategoryGormRepo(dbconn)
+	categoryService := catServiceImp.NewCategoryService(categoryRepo)
 
-	answerRepo:=ansRepoImp.NewAnswerGormRepo(dbconn)
-	answerService:=ansServiceImp.NewAnswerService(answerRepo)
+	answerRepo := ansRepoImp.NewAnswerGormRepo(dbconn)
+	answerService := ansServiceImp.NewAnswerService(answerRepo)
 
+	//userService.StoreUser(&entity.UserMock)
 	//Uncomment the following lines after you created a fresh teyake db
 	//createTables(dbconn)
 	//roleServ.StoreRole(&entity.UserRoleMock)
@@ -75,13 +84,19 @@ func main() {
 	//categoryService.StoreCategory(&entity.CategoryMock2)
 	//categoryService.StoreCategory(&entity.CategoryMock3)
 
-
 	userHandler := handler.NewUserHandler(templ, userService, sessionService, roleServ, csrfSignKey)
-	indexHandler := handler.NewIndexHandler(templ,questionService,categoryService)
-	questionHandler :=handler.NewQuestionHandler(templ,questionService,answerService,categoryService,csrfSignKey)
-	http.Handle("/",userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(indexHandler.Index))))
-	http.Handle("/question",userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionHandler.QuestionHandler))))
-	http.Handle("/question/new",userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionHandler.NewQuestion))))
+	indexHandler := handler.NewIndexHandler(templ, questionService, categoryService)
+	questionHandler := handler.NewQuestionHandler(templ, questionService, answerService, categoryService, csrfSignKey)
+	adminHandler := handler.NewAdminUsersHandler(templ, userService, sessionService, roleServ, csrfSignKey)
+
+	http.Handle("/admin", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(userHandler.Admin))))
+	http.Handle("/admin/users", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminHandler.AdminUsers))))
+	http.Handle("/admin/users/update", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminHandler.AdminUsersUpdate))))
+	http.Handle("/admin/users/delete", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminHandler.AdminUsersDelete))))
+
+	http.Handle("/", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(indexHandler.Index))))
+	http.Handle("/question", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionHandler.QuestionHandler))))
+	http.Handle("/question/new", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionHandler.NewQuestion))))
 	http.HandleFunc("/login", userHandler.Login)
 	http.HandleFunc("/signup", userHandler.SignUp)
 	http.Handle("/logout", userHandler.Authenticated(http.HandlerFunc(userHandler.Logout)))
