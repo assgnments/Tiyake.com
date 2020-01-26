@@ -99,6 +99,7 @@ func main() {
 	http.Handle("/question/new", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionHandler.NewQuestion))))
 	http.HandleFunc("/login", userHandler.Login)
 	http.HandleFunc("/signup", userHandler.SignUp)
+	http.HandleFunc("/question/search", indexHandler.SearchQuestions)
 	http.Handle("/logout", userHandler.Authenticated(http.HandlerFunc(userHandler.Logout)))
 	http.ListenAndServe(":8181", nil)
 }
