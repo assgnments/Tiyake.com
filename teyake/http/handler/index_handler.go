@@ -67,7 +67,7 @@ func (indexHandler *IndexHandler) Index(w http.ResponseWriter, r *http.Request) 
 
 func (indexHandler *IndexHandler) SearchQuestions(w http.ResponseWriter, r *http.Request) {
 	searchtype := r.URL.Query().Get("type")
-	search := r.URL.Query().Get("search")
+	search := r.URL.Query().Get("searchable")
 	fmt.Println(search)
 	questions := []entity.Question{}
 
