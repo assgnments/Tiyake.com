@@ -62,6 +62,19 @@ func (questionRepo *QuestionGormRepo) QuestionByCategory(categoryId uint) ([]ent
 
 func (questionRepo *QuestionGormRepo) SearchQuestions(searcheable string) ([]entity.Question, []error) {
 	questions := []entity.Question{}
-	errs := questionRepo.conn.Set("gorm:auto_preload", true).Where("description like % ? %", searcheable).Find(&questions).GetErrors()
+
+	errs := questionRepo.conn.Set("gorm:auto_preload", true).Where("Description like ? or Title like ? ", "%"+searcheable+"%", "%"+searcheable+"%").Find(&questions).GetErrors()
+	return questions, errs
+}
+
+func (questionRepo *QuestionGormRepo) SearchByTitle(searcheable string) ([]entity.Question, []error) {
+	questions := []entity.Question{}
+	errs := questionRepo.conn.Set("gorm:auto_preload", true).Where("Title like ?", "%"+searcheable+"%").Find(&questions).GetErrors()
+	return questions, errs
+}
+
+func (questionRepo *QuestionGormRepo) SearchByDescription(searcheable string) ([]entity.Question, []error) {
+	questions := []entity.Question{}
+	errs := questionRepo.conn.Set("gorm:auto_preload", true).Where("Description like ?", "%"+searcheable+"%").Find(&questions).GetErrors()
 	return questions, errs
 }

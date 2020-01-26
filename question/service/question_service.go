@@ -46,3 +46,11 @@ func (qs *QuestionService) QuestionByCategory(categoryId uint) ([]entity.Questio
 func (qs *QuestionService) SearchQuestions(searchable string) ([]entity.Question, []error) {
 	return qs.QuestionRepo.SearchQuestions(searchable)
 }
+
+func (qs *QuestionService) SearchByTitle(searchable string) ([]entity.Question, []error) {
+	return qs.QuestionRepo.SearchByTitle(searchable)
+}
+
+func (qs *QuestionService) SearchByDescription(searchable string) ([]entity.Question, []error) {
+	return qs.QuestionRepo.SearchByDescription(searchable)
+}
