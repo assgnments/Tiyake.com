@@ -12,7 +12,6 @@ type QuestionGormRepo struct {
 	conn *gorm.DB
 }
 
-
 // NewQuestionGormRepo returns new object of QuestionGormRepo
 func NewQuestionGormRepo(db *gorm.DB) question.QuestionRepository {
 	return &QuestionGormRepo{conn: db}
@@ -57,7 +56,12 @@ func (questionRepo *QuestionGormRepo) StoreQuestion(question *entity.Question) (
 }
 func (questionRepo *QuestionGormRepo) QuestionByCategory(categoryId uint) ([]entity.Question, []error) {
 	questions := []entity.Question{}
-	errs := questionRepo.conn.Find(&questions,"category_id=?",categoryId).GetErrors()
+	errs := questionRepo.conn.Find(&questions, "category_id=?", categoryId).GetErrors()
 	return questions, errs
 }
 
+func (questionRepo *QuestionGormRepo) SearchQuestions(searcheable string) ([]entity.Question, []error) {
+	questions := []entity.Question{}
+	errs := questionRepo.conn.Set("gorm:auto_preload", true).Where("description like % ? %", searcheable).Find(&questions).GetErrors()
+	return questions, errs
+}
