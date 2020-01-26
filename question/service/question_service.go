@@ -10,7 +10,6 @@ type QuestionService struct {
 	QuestionRepo question.QuestionRepository
 }
 
-
 // NewQuestionService returns a new QuestionService object
 func NewQuestionService(commRepo question.QuestionRepository) question.QuestionService {
 	return &QuestionService{QuestionRepo: commRepo}
@@ -44,3 +43,6 @@ func (qs *QuestionService) QuestionByCategory(categoryId uint) ([]entity.Questio
 	return qs.QuestionRepo.QuestionByCategory(categoryId)
 }
 
+func (qs *QuestionService) SearchQuestions(searchable string) ([]entity.Question, []error) {
+	return qs.QuestionRepo.SearchQuestions(searchable)
+}
