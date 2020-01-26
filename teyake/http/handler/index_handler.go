@@ -87,5 +87,15 @@ func (indexHandler *IndexHandler) SearchQuestions(w http.ResponseWriter, r *http
 		Questions:  questions,
 	}
 
+	if len(questions) == 0 {
+		data = struct {
+			Categories []entity.Category
+			Questions  []entity.Question
+		}{
+			Categories: nil,
+			Questions:  nil,
+		}
+	}
+
 	indexHandler.tmpl.ExecuteTemplate(w, "index.layout", data)
 }
