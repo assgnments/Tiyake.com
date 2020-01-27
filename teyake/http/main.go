@@ -12,9 +12,9 @@ import (
 	catServiceImp "teyake/category/service"
 	quesRepoImp "teyake/question/repository"
 	quesServiceImp "teyake/question/service"
+	"teyake/teyake/http/handler"
 	upvoteRepoImp "teyake/upvote/repository"
 	upvoteServiceImp "teyake/upvote/service"
-	"teyake/teyake/http/handler"
 	userRepoImp "teyake/user/repository"
 	userServiceImp "teyake/user/service"
 
@@ -78,7 +78,7 @@ func main() {
 
 	upvoteRepo := upvoteRepoImp.NewUpVoteGormRepo(dbconn)
 	upvoteService := upvoteServiceImp.NewUpVoteService(upvoteRepo)
-	
+
 	//userService.StoreUser(&entity.UserMock)
 	//Uncomment the following lines after you created a fresh teyake db
 	//createTables(dbconn)
@@ -94,7 +94,7 @@ func main() {
 	userHandler := handler.NewUserHandler(templ, userService, sessionService, roleServ, csrfSignKey)
 	indexHandler := handler.NewIndexHandler(templ, questionService, categoryService)
 	questionHandler := handler.NewQuestionHandler(templ, questionService, answerService, categoryService, upvoteService, csrfSignKey)
-	adminHandler := handler.NewAdminUsersHandler(templ, userService, sessionService, roleServ, csrfSignKey)
+	adminHandler := handler.NewAdminUsersHandler(templ, userService, roleServ, csrfSignKey)
 
 	http.Handle("/admin", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(userHandler.Admin))))
 	http.Handle("/admin/users", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminHandler.AdminUsers))))

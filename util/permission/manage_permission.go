@@ -86,6 +86,7 @@ var authorities = authority{
 func HasPermission(role string, path string, method string) bool {
 	if strings.HasPrefix(path, "/admin") {
 		path = "/admin"
+
 	}
 	perm := authorities[path]
 	checkedRole := checkRole(role, perm.roles)

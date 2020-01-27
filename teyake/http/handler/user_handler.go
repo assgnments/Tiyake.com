@@ -164,6 +164,7 @@ func (userHandler *UserHandler) Login(w http.ResponseWriter, r *http.Request) {
 			userHandler.tmpl.ExecuteTemplate(w, "login.layout", loginForm)
 			return
 		}
+
 		//Save session Id in cookies
 		session.SetCookies(claims, newSession.Expires, newSession.SigningKey, w)
 

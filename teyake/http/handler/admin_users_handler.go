@@ -253,5 +253,6 @@ func (auh *AdminUsersHandler) AdminUsersDelete(w http.ResponseWriter, r *http.Re
 			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		}
 	}
+
 	http.Redirect(w, r, "/admin/users", http.StatusSeeOther)
 }

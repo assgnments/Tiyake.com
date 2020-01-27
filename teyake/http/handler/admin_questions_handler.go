@@ -63,5 +63,6 @@ func (aqh *AdminQuestionHandler) AdminQuestionsDelete(w http.ResponseWriter, r *
 			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		}
 	}
+
 	http.Redirect(w, r, "/admin/questions", http.StatusSeeOther)
 }
