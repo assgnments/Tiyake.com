@@ -10,4 +10,7 @@ type QuestionService interface {
 	UpdateQuestion(Question *entity.Question) (*entity.Question, []error)
 	DeleteQuestion(id uint) (*entity.Question, []error)
 	StoreQuestion(Question *entity.Question) (*entity.Question, []error)
+	SearchQuestions(searchable string) ([]entity.Question, []error)
+	SearchByTitle(searchable string) ([]entity.Question, []error)
+	SearchByDescription(searchable string) ([]entity.Question, []error)
 }

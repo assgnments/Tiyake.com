@@ -46,14 +46,13 @@
         color: #007bff !important;
     }
 
-    #form_container {
+    .form_container {
         border-radius: 30px;
-        margin-top: 12vh;
-        margin-bottom: 13.2vh;
     }
 
-    #form_admin > .form-group {
+    .form-group {
         padding: 5px;
+        margin: 5px;
     }
 </style>
 <body class="bg-light">
@@ -61,18 +60,18 @@
 <div class="d-flex" id="wrapper" style="height: 100%!important;">
 
     <div class="bg-light border-right " id="sidebar-wrapper">
-        <div class="sidebar-heading">Tiyake.com</div>
+        <div class="sidebar-heading h2">Tiyake.com</div>
         <div class="list-group list-group-flush">
             <a href="/admin" class="list-group-item list-group-item-action bg-light">Dashboard</a>
             <a href="/admin/users" class="list-group-item list-group-item-action bg-light">Users</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">Questions</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">Answers</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">Categories</a>
-            <a href="#" class="list-group-item list-group-item-action bg-light">User Roles</a>
+            <a href="/admin/questions" class="list-group-item list-group-item-action bg-light">Questions</a>
+            <a href="/admin/answers" class="list-group-item list-group-item-action bg-light">Answers</a>
+            <a href="/admin/categories" class="list-group-item list-group-item-action bg-light">Categories</a>
+
         </div>
     </div>
 
-    <div id="page-content-wrapper">
+    <div id="page-content-wrapper" style="width: 100%!important;">
         {{/*end navbar*/}}
 
 {{end}}

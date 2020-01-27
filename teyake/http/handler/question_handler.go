@@ -14,6 +14,7 @@ import (
 	"teyake/entity"
 	"teyake/form"
 	"teyake/question"
+	"teyake/upvote"
 	"teyake/util"
 	"teyake/util/token"
 )
@@ -30,6 +31,7 @@ type QuestionHandler struct {
 	tmpl            *template.Template
 	questionService question.QuestionService
 	answerService   answer.AnswerService
+	upvoteService   upvote.UpVoteService
 	categoryService category.CategoryService
 	csrfSigningKey  []byte
 }
@@ -43,12 +45,13 @@ type NewQuestionForm struct {
 	Categories []entity.Category
 }
 
-func NewQuestionHandler(tmpl *template.Template, questionService question.QuestionService, answerService answer.AnswerService, categoryService category.CategoryService, csrfSigningKey []byte) *QuestionHandler {
+func NewQuestionHandler(tmpl *template.Template, questionService question.QuestionService, answerService answer.AnswerService, categoryService category.CategoryService, upvoteService upvote.UpVoteService, csrfSigningKey []byte) *QuestionHandler {
 	return &QuestionHandler{
 		tmpl:            tmpl,
 		questionService: questionService,
 		csrfSigningKey:  csrfSigningKey,
 		answerService:   answerService,
+		upvoteService:   upvoteService,
 		categoryService: categoryService,
 	}
 }

@@ -12,7 +12,6 @@ type QuestionGormRepo struct {
 	conn *gorm.DB
 }
 
-
 // NewQuestionGormRepo returns new object of QuestionGormRepo
 func NewQuestionGormRepo(db *gorm.DB) question.QuestionRepository {
 	return &QuestionGormRepo{conn: db}
@@ -57,7 +56,25 @@ func (questionRepo *QuestionGormRepo) StoreQuestion(question *entity.Question) (
 }
 func (questionRepo *QuestionGormRepo) QuestionByCategory(categoryId uint) ([]entity.Question, []error) {
 	questions := []entity.Question{}
-	errs := questionRepo.conn.Find(&questions,"category_id=?",categoryId).GetErrors()
+	errs := questionRepo.conn.Find(&questions, "category_id=?", categoryId).GetErrors()
 	return questions, errs
 }
 
+func (questionRepo *QuestionGormRepo) SearchQuestions(searcheable string) ([]entity.Question, []error) {
+	questions := []entity.Question{}
+
+	errs := questionRepo.conn.Set("gorm:auto_preload", true).Where("Description like ? or Title like ? ", "%"+searcheable+"%", "%"+searcheable+"%").Find(&questions).GetErrors()
+	return questions, errs
+}
+
+func (questionRepo *QuestionGormRepo) SearchByTitle(searcheable string) ([]entity.Question, []error) {
+	questions := []entity.Question{}
+	errs := questionRepo.conn.Set("gorm:auto_preload", true).Where("Title like ?", "%"+searcheable+"%").Find(&questions).GetErrors()
+	return questions, errs
+}
+
+func (questionRepo *QuestionGormRepo) SearchByDescription(searcheable string) ([]entity.Question, []error) {
+	questions := []entity.Question{}
+	errs := questionRepo.conn.Set("gorm:auto_preload", true).Where("Description like ?", "%"+searcheable+"%").Find(&questions).GetErrors()
+	return questions, errs
+}

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -61,5 +62,42 @@ func (indexHandler *IndexHandler) Index(w http.ResponseWriter, r *http.Request) 
 		Categories: categories,
 		Questions:  questionList,
 	}
+	indexHandler.tmpl.ExecuteTemplate(w, "index.layout", data)
+}
+
+func (indexHandler *IndexHandler) SearchQuestions(w http.ResponseWriter, r *http.Request) {
+	searchtype := r.URL.Query().Get("type")
+	search := r.URL.Query().Get("searchable")
+	fmt.Println(search)
+	fmt.Println(("^^is the search query text"))
+	fmt.Println(("search type is " + searchtype))
+	questions := []entity.Question{}
+
+	if searchtype == "Title" {
+		questions, _ = indexHandler.questionService.SearchByTitle(search)
+	} else if searchtype == "Description" {
+		questions, _ = indexHandler.questionService.SearchByDescription(search)
+	} else {
+		questions, _ = indexHandler.questionService.SearchQuestions(search)
+	}
+
+	data := struct {
+		Categories []entity.Category
+		Questions  []entity.Question
+	}{
+		Categories: nil,
+		Questions:  questions,
+	}
+
+	if len(questions) == 0 {
+		data = struct {
+			Categories []entity.Category
+			Questions  []entity.Question
+		}{
+			Categories: nil,
+			Questions:  nil,
+		}
+	}
+
 	indexHandler.tmpl.ExecuteTemplate(w, "index.layout", data)
 }
