@@ -3,6 +3,8 @@
    {{ template "navbar.layout" .Categories}}
     {{range .Questions}}
         {{template "question.layout" .}}
+    {{else }}
+    <h1>Nothing to show here</h1>
     {{end}}
     {{ template "footer.layout"  }}
 
