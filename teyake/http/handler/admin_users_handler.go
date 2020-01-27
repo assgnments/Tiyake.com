@@ -9,30 +9,28 @@ import (
 	"teyake/entity"
 	"teyake/form"
 	"teyake/user"
+	"teyake/util/hash"
 	"teyake/util/token"
 )
 
 type AdminUsersHandler struct {
-	tmpl           *template.Template
-	userService    user.UserService
-	sessionService user.SessionService
-	roleService    user.RoleService
-	csrfSignKey    []byte
+	tmpl        *template.Template
+	userService user.UserService
+	roleService user.RoleService
+	csrfSignKey []byte
 }
 
 func NewAdminUsersHandler(
 	t *template.Template,
 	userService user.UserService,
-	sessionService user.SessionService,
 	roleService user.RoleService,
-	csKey []byte,
+	csrfSigningKey []byte,
 ) *AdminUsersHandler {
 	return &AdminUsersHandler{
-		tmpl:           t,
-		userService:    userService,
-		sessionService: sessionService,
-		roleService:    roleService,
-		csrfSignKey:    csKey,
+		tmpl:        t,
+		userService: userService,
+		roleService: roleService,
+		csrfSignKey: csrfSigningKey,
 	}
 }
 
@@ -111,12 +109,12 @@ func (auh *AdminUsersHandler) AdminUsersUpdate(w http.ResponseWriter, r *http.Re
 			http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 			return
 		}
-		updateform := form.Input{Values: r.PostForm, VErrors: form.VaildationErros{}}
-		updateform.ValidateRequiredFields("fullname", "email", "role")
-		updateform.ValidateEmail("email")
-		updateform.CSFR = token
-		if !updateform.IsValid() {
-			auh.tmpl.ExecuteTemplate(w, "admin.users.update.layout", updateform)
+		updateUserForm := form.Input{Values: r.PostForm, VErrors: form.VaildationErros{}}
+		updateUserForm.ValidateRequiredFields("fullname", "email", "role")
+		updateUserForm.ValidateEmail("email")
+		updateUserForm.CSFR = token
+		if !updateUserForm.IsValid() {
+			auh.tmpl.ExecuteTemplate(w, "admin.users.update.layout", updateUserForm)
 			return
 		}
 		userID := r.FormValue("userid")
@@ -133,14 +131,14 @@ func (auh *AdminUsersHandler) AdminUsersUpdate(w http.ResponseWriter, r *http.Re
 		}
 		emailExists := auh.userService.EmailExists(r.FormValue("email"))
 		if (user.Email != r.FormValue("email")) && emailExists {
-			updateform.VErrors.Add("email", "Email Already exists")
-			auh.tmpl.ExecuteTemplate(w, "admin.users.update.layout", updateform)
+			updateUserForm.VErrors.Add("email", "Email Already exists")
+			auh.tmpl.ExecuteTemplate(w, "admin.users.update.layout", updateUserForm)
 			return
 		}
 		roleId, err := strconv.Atoi(r.FormValue("role"))
 		if err != nil {
-			updateform.VErrors.Add("role", "Could not retrieve role id")
-			auh.tmpl.ExecuteTemplate(w, "admin.users.update.layout", updateform)
+			updateUserForm.VErrors.Add("role", "Could not retrieve role id")
+			auh.tmpl.ExecuteTemplate(w, "admin.users.update.layout", updateUserForm)
 			return
 		}
 		usr := &entity.User{
@@ -160,6 +158,87 @@ func (auh *AdminUsersHandler) AdminUsersUpdate(w http.ResponseWriter, r *http.Re
 
 	}
 
+}
+
+func (auh *AdminUsersHandler) AdminUsersNew(w http.ResponseWriter, r *http.Request) {
+	token, err := token.NewCSRFToken(auh.csrfSignKey)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+	}
+	if r.Method == http.MethodGet {
+		roles, errs := auh.roleService.Roles()
+		if len(errs) > 0 {
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			return
+		}
+		newUserForm := struct {
+			Values  url.Values
+			VErrors form.VaildationErros
+			Roles   []entity.Role
+			CSRF    string
+		}{
+			Values:  nil,
+			VErrors: nil,
+			Roles:   roles,
+			CSRF:    token,
+		}
+		auh.tmpl.ExecuteTemplate(w, "admin.users.new.layout", newUserForm)
+		return
+	}
+	if r.Method == http.MethodPost {
+		err := r.ParseForm()
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		// Validate the form contents
+		newUserForm := form.Input{Values: r.PostForm, VErrors: form.VaildationErros{}}
+		newUserForm.ValidateRequiredFields("fullname", "email", "password")
+		newUserForm.ValidateEmail("email")
+		newUserForm.ValidatePassword("password")
+		newUserForm.CSFR = token
+		// If there are any errors, redisplay the signup form.
+		if !newUserForm.IsValid() {
+			auh.tmpl.ExecuteTemplate(w, "admin.users.new.layout", newUserForm)
+			return
+		}
+
+		if auh.userService.EmailExists(r.FormValue(emailKey)) {
+			newUserForm.VErrors.Add(emailKey, "This email is already in use!")
+			auh.tmpl.ExecuteTemplate(w, "admin.users.new.layout", newUserForm)
+			return
+		}
+
+		hashedPassword, err := hash.HashPassword(r.FormValue(passwordKey))
+		if err != nil {
+			newUserForm.VErrors.Add("password", "Password Could not be stored")
+			auh.tmpl.ExecuteTemplate(w, "admin.users.new.layout", newUserForm)
+			return
+		}
+
+		roleId, err := strconv.Atoi(r.FormValue("role"))
+
+		if err != nil {
+			newUserForm.VErrors.Add("role", "could not retrieve role id")
+			auh.tmpl.ExecuteTemplate(w, "admin.user.new.layout", newUserForm)
+			return
+		}
+		///Get the data from the form and construct user object
+		user := entity.User{
+			FullName: r.FormValue(fullnameKey),
+			Email:    r.FormValue(emailKey),
+			Password: string(hashedPassword),
+			RoleID:   uint(roleId),
+		}
+		// Save the user to the database
+		_, ers := auh.userService.StoreUser(&user)
+		if len(ers) > 0 {
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			return
+		}
+		http.Redirect(w, r, "/admin/users", http.StatusSeeOther)
+	}
 }
 
 func (auh *AdminUsersHandler) AdminUsersDelete(w http.ResponseWriter, r *http.Request) {

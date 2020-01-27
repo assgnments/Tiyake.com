@@ -9,7 +9,8 @@ import (
 	"teyake/question"
 )
 
-const categoryTag="cat"
+const categoryTag = "cat"
+
 type IndexHandler struct {
 	tmpl            *template.Template
 	questionService question.QuestionService
@@ -25,18 +26,18 @@ func NewIndexHandler(tmpl *template.Template, questionService question.QuestionS
 }
 
 func (indexHandler *IndexHandler) Index(w http.ResponseWriter, r *http.Request) {
-	categoryId:=r.URL.Query().Get(categoryTag)
-	questionList:=[]entity.Question{}
-	if categoryId =="" {
+	categoryId := r.URL.Query().Get(categoryTag)
+	questionList := []entity.Question{}
+	if categoryId == "" {
 		questions, errs := indexHandler.questionService.Questions()
 		if len(errs) > 0 {
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			return
 		}
-		questionList=questions
-	}else{
-		categoryId,err:=strconv.Atoi(categoryId)
-		if err!=nil{
+		questionList = questions
+	} else {
+		categoryId, err := strconv.Atoi(categoryId)
+		if err != nil {
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			return
 		}
@@ -45,9 +46,8 @@ func (indexHandler *IndexHandler) Index(w http.ResponseWriter, r *http.Request) 
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			return
 		}
-		questionList=questions
+		questionList = questions
 	}
-
 
 	categories, errs := indexHandler.categoryService.Catagories()
 	if len(errs) > 0 {

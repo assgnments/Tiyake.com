@@ -40,6 +40,46 @@ var authorities = authority{
 		roles:   []string{"ADMIN"},
 		methods: []string{"GET", "POST"},
 	},
+	"/admin/users/new": permission{
+		roles:   []string{"ADMIN"},
+		methods: []string{"GET", "POST"},
+	},
+	"/admin/users/delete": permission{
+		roles:   []string{"ADMIN"},
+		methods: []string{"GET", "POST"},
+	},
+	"/admin/categores": permission{
+		roles:   []string{"ADMIN"},
+		methods: []string{"GET", "POST"},
+	},
+	"/admin/categories/update": permission{
+		roles:   []string{"ADMIN"},
+		methods: []string{"GET", "POST"},
+	},
+	"/admin/categories/delete": permission{
+		roles:   []string{"ADMIN"},
+		methods: []string{"GET", "POST"},
+	},
+	"/admin/categories/new": permission{
+		roles:   []string{"ADMIN"},
+		methods: []string{"GET", "POST"},
+	},
+	"/admin/questions": permission{
+		roles:   []string{"ADMIN"},
+		methods: []string{"GET", "POST"},
+	},
+	"/admin/questions/delete": permission{
+		roles:   []string{"ADMIN"},
+		methods: []string{"GET", "POST"},
+	},
+	"/admin/answers": permission{
+		roles:   []string{"ADMIN"},
+		methods: []string{"GET", "POST"},
+	},
+	"/admin/answers/delete": permission{
+		roles:   []string{"ADMIN"},
+		methods: []string{"GET", "POST"},
+	},
 }
 
 // HasPermission checks if a given role has permission to access a given route for a given method
