@@ -69,6 +69,8 @@ func (indexHandler *IndexHandler) SearchQuestions(w http.ResponseWriter, r *http
 	searchtype := r.URL.Query().Get("type")
 	search := r.URL.Query().Get("searchable")
 	fmt.Println(search)
+	fmt.Println(("^^is the search query text"))
+	fmt.Println(("search type is " + searchtype))
 	questions := []entity.Question{}
 
 	if searchtype == "Title" {
