@@ -95,11 +95,26 @@ func main() {
 	indexHandler := handler.NewIndexHandler(templ, questionService, categoryService)
 	questionHandler := handler.NewQuestionHandler(templ, questionService, answerService, categoryService, upvoteService, csrfSignKey)
 	adminHandler := handler.NewAdminUsersHandler(templ, userService, roleServ, csrfSignKey)
+	adminquestionHandler := handler.NewAdminQuestionHandler(templ, questionService, categoryService, csrfSignKey)
+	adminanswerHandler := handler.NewAdminAnswerHandler(templ, answerService, questionService, csrfSignKey)
+	admincategoryHandler := handler.NewAdminCategoryHandler(templ, categoryService, csrfSignKey)
 
 	http.Handle("/admin", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(userHandler.Admin))))
 	http.Handle("/admin/users", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminHandler.AdminUsers))))
 	http.Handle("/admin/users/update", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminHandler.AdminUsersUpdate))))
 	http.Handle("/admin/users/delete", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminHandler.AdminUsersDelete))))
+	http.Handle("/admin/users/new", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminHandler.AdminUsersNew))))
+
+	http.Handle("/admin/categories", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(admincategoryHandler.AdminCategoriesHandler))))
+	http.Handle("/admin/categories/delete", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(admincategoryHandler.AdminCategoriesDelete))))
+	http.Handle("/admin/categories/update", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(admincategoryHandler.AdminCategoriesUpdate))))
+	http.Handle("/admin/categories/new", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(admincategoryHandler.AdminCategoriesNew))))
+
+	http.Handle("/admin/questions", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminquestionHandler.AdminQuestionHandler))))
+	http.Handle("/admin/questions/delete", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminquestionHandler.AdminQuestionsDelete))))
+
+	http.Handle("/admin/answers", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminanswerHandler.AdminAnswerHandler))))
+	http.Handle("/admin/answers/delete", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminanswerHandler.AdminAnswersDelete))))
 
 	http.Handle("/", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(indexHandler.Index))))
 	http.Handle("/question", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionHandler.QuestionHandler))))
