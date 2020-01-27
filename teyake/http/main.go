@@ -12,6 +12,8 @@ import (
 	catServiceImp "teyake/category/service"
 	quesRepoImp "teyake/question/repository"
 	quesServiceImp "teyake/question/service"
+	upvoteRepoImp "teyake/upvote/repository"
+	upvoteServiceImp "teyake/upvote/service"
 	"teyake/teyake/http/handler"
 	userRepoImp "teyake/user/repository"
 	userServiceImp "teyake/user/service"
@@ -25,7 +27,7 @@ import (
 )
 
 func createTables(dbconn *gorm.DB) []error {
-	errs := dbconn.CreateTable(&entity.User{}, &entity.Session{}, &entity.Role{}, &entity.Question{}, &entity.Answer{}, &entity.Category{}).GetErrors()
+	errs := dbconn.CreateTable(&entity.User{}, &entity.Session{}, &entity.Role{}, &entity.Question{}, &entity.Answer{}, &entity.Category{}, &entity.UpVote{}).GetErrors()
 	if errs != nil {
 		return errs
 	}
@@ -74,19 +76,24 @@ func main() {
 	answerRepo := ansRepoImp.NewAnswerGormRepo(dbconn)
 	answerService := ansServiceImp.NewAnswerService(answerRepo)
 
+	upvoteRepo := upvoteRepoImp.NewUpVoteGormRepo(dbconn)
+	upvoteService := upvoteServiceImp.NewUpVoteService(upvoteRepo)
+	
 	//userService.StoreUser(&entity.UserMock)
 	//Uncomment the following lines after you created a fresh teyake db
 	//createTables(dbconn)
 	//roleServ.StoreRole(&entity.UserRoleMock)
 	//roleServ.StoreRole(&entity.AdminRoleMock)
 	//questionService.StoreQuestion(&entity.QuestionMock)
+	//answerService.StoreAnswer(&entity.AnswerMock)
+	//upvoteService.StoreUpVote(&entity.UpVoteMock)
 	//categoryService.StoreCategory(&entity.CategoryMock1)
 	//categoryService.StoreCategory(&entity.CategoryMock2)
 	//categoryService.StoreCategory(&entity.CategoryMock3)
 
 	userHandler := handler.NewUserHandler(templ, userService, sessionService, roleServ, csrfSignKey)
 	indexHandler := handler.NewIndexHandler(templ, questionService, categoryService)
-	questionHandler := handler.NewQuestionHandler(templ, questionService, answerService, categoryService, csrfSignKey)
+	questionHandler := handler.NewQuestionHandler(templ, questionService, answerService, categoryService, upvoteService, csrfSignKey)
 	adminHandler := handler.NewAdminUsersHandler(templ, userService, sessionService, roleServ, csrfSignKey)
 
 	http.Handle("/admin", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(userHandler.Admin))))
