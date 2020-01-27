@@ -1,0 +1,28 @@
+{{define "admin.categories.new.layout"}}
+    {{template "admin.navbar.layout" .}}
+    {{template "admin.categories.new.content" .}}
+    {{template "admin.footer.layout" .}}
+{{end}}
+
+{{define "admin.categories.new.content"}}
+    <div class="row justify-content-center align-items-center h-100" style="height: 100vh !important;">
+
+        <div class="p-3 bg-white col-4 form_container">
+            <form class="form_admin" method="POST" action="/admin/categories/new" id="form_admin">
+                <input type="hidden" name="csfrKey" value="{{ .CSRF }}" />
+                <input class="form-control" type='hidden' name='userid' value='{{ .Values.Get "userid" }}' />
+                <div class="form-group">
+                    <label for='category' class='col-form-label'>Category Name</label>
+                    {{with .VErrors.Get "category"}}
+                        <label class="text-danger">{{.}}</label>
+                    {{end}}
+                    <input type='text' class='form-control' name='category' id='category' value='{{ .Values.Get "category" }}'
+                           required autofocus placeholder='Category Name'>
+                </div>
+                <button type='submit' class='btn btn-primary float-right'>Create Category</button>
+            </form>
+        </div>
+
+
+    </div>
+{{end}}

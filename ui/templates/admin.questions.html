@@ -1,0 +1,43 @@
+{{define "admin.questions.layout"}}
+    {{template "admin.navbar.layout" .}}
+    {{template "admin.questions.content" .}}
+    {{template "admin.footer.layout" .}}
+{{end}}
+
+{{define "admin.questions.content"}}
+    <span class="h3 pl-2 m-2 ">Questions</span>
+
+    <table class="table table-striped ml-3 mt-3" id="table">
+        <thead>
+        <tr>
+            <th onclick="sortTable(0)" scope="col">ID</th>
+            <th onclick="sortTable(1)" scope="col">Title</th>
+            <th onclick="sortTable(2)" scope="col">Description</th>
+            <th onclick="sortTable(3)" scope="col">Author</th>
+            <th onclick="sortTable(4)" scope="col">Category</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {{range .Questions}}
+            <tr>
+                <td>{{.ID}}</td>
+                <td>{{.Title}}</td>
+                <td>{{.Description}}</td>
+                <td>{{.User.FullName}}</td>
+                {{$id:= .CategoryID}}
+                {{range .Categories}}
+                    <p>jalfjalf</p>
+                    {{if eq .ID $id}}
+                        <td>{{.Name}}</td>
+                    {{end}}
+                {{end}}
+
+                <td><a href="/admin/questions/delete?id={{.ID}}">Delete</a></td>
+            </tr>
+        {{end}}
+
+        </tbody>
+    </table>
+{{end}}

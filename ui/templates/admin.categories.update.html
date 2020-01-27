@@ -1,0 +1,28 @@
+{{define "admin.categories.update.layout"}}
+    {{template "admin.navbar.layout" .}}
+    {{template "admin.categories.update.content" .}}
+    {{template "admin.footer.layout" .}}
+{{end}}
+
+{{define "admin.categories.update.content"}}
+    <div class="row justify-content-center align-items-center" style="height: 100vh !important;">
+
+        <div class="p-3 bg-white col-4 form_container">
+            <form class="form-admin" method="POST" action="/admin/categories/update" id="form_admin">
+                <input type="hidden" name="csfrKey" value="{{ .CSRF }}" />
+                <input class="form-control" type='hidden' name='id' value='{{ .Values.Get "id" }}' />
+                <div class="form-group">
+                    <label for='category' class='col-form-label'>Category Name</label>
+                    {{with .VErrors.Get "category"}}
+                        <label class="text-danger">{{.}}</label>
+                    {{end}}
+                    <input type='text' class='form-control' name='category' id='category' value='{{ .Values.Get "category" }}'
+                           required autofocus placeholder='Category Name'>
+                </div>
+                <button type='submit' class='btn btn-primary float-right'>Update Category</button>
+            </form>
+        </div>
+
+
+    </div>
+{{end}}

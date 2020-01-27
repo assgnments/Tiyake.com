@@ -6,9 +6,9 @@
 
 {{define "admin.users.update.content"}}
 
-    <div class="row">
-        <div class="col-lg"></div>
-        <div class="p-3 bg-white col-lg-6" id="form_container">
+    <div class="row h-100 align-items-center justify-content-center"style="height: 100vh !important;">
+        <div class="col-4"></div>
+        <div class="p-4 col-4 bg-white form_container">
         <form class="form-admin" method="POST" action="/admin/users/update" id="form_admin">
 
             <input type="hidden" name="csfrKey" value="{{ .CSRF }}" />
@@ -44,7 +44,7 @@
             <button type='submit' class='btn btn-primary float-right'>Update User</button>
         </form>
         </div>
-        <div class="col-lg"></div>
+        <div class="col-4"></div>
 
     </div>
 

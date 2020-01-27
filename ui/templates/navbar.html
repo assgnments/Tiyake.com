@@ -6,10 +6,10 @@
         <title>Tiyake.com</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- css -->
+
         <link rel="stylesheet" href="/../assets/css/bootstrap.min.css">
         <link rel="stylesheet" href="/../assets/css/bootstrap-grid.min.css">
-        
+
     </head>
     <script>
         function fileSelect(e) {
@@ -85,7 +85,7 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="col-lg"></div>
-                    <div class="collapse navbar-collapse col-lg-8" id="navbarSupportedContent">
+                    <div class="collapse navbar-collapse col-lg-7" id="navbarSupportedContent">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
                                 <a class="nav-link" href="/">
@@ -101,31 +101,7 @@
 
                             {{end}}
                         </ul>
-                        <form method="GET" action="/question/search" class="form-inline mt-2 mt-md-0"
-                              style="margin-right: 15px;">
-                            <!-- <i class="fas fa-search" aria-hidden="true"></i> -->
-                            <input type="text" name="searchable"/>
-                            <button class="btn btn-outline-primary text-primary my-2 my-sm-0" type="submit">Search
-                            </button>
-                            <select name="type" class="bootstrap-select">
-                                <option value="Any" selected="selected" style="color: #007bff; background-color: white !important;">Search By</option>
-                                <option value="Title" style="color: #007bff; background-color: white !important;">Title</option>
-                                <option value="Description" style="color: #007bff; background-color: white !important;">Description</option>
-                                <option value="Any" style="color: #007bff; background-color: white !important;">Any</option>
-                            </select>
 
-
-                            <!-- <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" style="background-color: #007bff; border: #495057; !important;" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <button style="color: #007bff; background-color: white !important;" class="dropdown-item" type="button">Action</button>
-                                    <button style="color: #007bff; background-color: white !important;" class="dropdown-item" type="button">Another action</button>
-                                    <button style="color: #007bff; background-color: white !important;" class="dropdown-item" type="button">Something else here</button>
-                                </div>
-                            </div> -->
-                        </form>
                         <form method="GET" action="/question/new" class="form-inline mt-2 mt-md-0"
                               style="margin-right: 15px;">
                             <button class="btn btn-outline-primary text-primary my-2 my-sm-0" type="submit">Publish
