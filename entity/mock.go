@@ -1,18 +1,16 @@
 package entity
 
 //var UserMock = User{
-//	FullName :"Habib",
-//	Email  :  "habib@gmail.com",
+//	FullName :"Yared",
+//	Email  :  "yaredgirmadb123@gmail.com",
 //	Password :"123123123",
 //	RoleID  : 1,
 //}
 //
 var AdminRoleMock = Role{
-
 	Name: "ADMIN",
 }
 var UserRoleMock = Role{
-
 	Name: "USER",
 }
 
@@ -23,6 +21,17 @@ var QuestionMock = Question{
 	UserID:      1,
 	CategoryID:  0,
 	Answers:     nil,
+}
+
+var AnswerMock = Answer{
+	UserID:     1,
+	QuestionID: 1,
+	Message:    "Yo chalaw",
+}
+
+var UpVoteMock = UpVote{
+	UserID:   1,
+	AnswerID: 1,
 }
 
 var CategoryMock1 = Category{
