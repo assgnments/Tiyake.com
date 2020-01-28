@@ -43,6 +43,7 @@ func (userRepo *MockUserRepo) User(id uint) (*entity.User, []error) {
 
 }
 
+
 func (userRepo *MockUserRepo) Users() ([]entity.User, []error) {
 		return nil,nil
 }
