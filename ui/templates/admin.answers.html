@@ -7,29 +7,47 @@
 {{define "admin.answers.content"}}
     <span class="h3 pl-2 m-2 ">Answers</span>
 
-<table class="table table-striped ml-3 mt-3" id="table">
+<table class="table table-striped mt-3" id="table">
     <thead>
     <tr>
         <th onclick="sortTable(0)" scope="col">ID</th>
-        <th onclick="sortTable(1)" scope="col">Title</th>
-        <th onclick="sortTable(2)" scope="col">Description</th>
-        <th onclick="sortTable(3)" scope="col">Author</th>
-        <th onclick="sortTable(4)" scope="col">Category</th>
+        <th onclick="sortTable(1)" scope="col">Answer</th>
+        <th onclick="sortTable(2)" scope="col">Author</th>
+        <th onclick="sortTable(3)" scope="col">Date</th>
+        <th onclick="sortTable(4)" scope="col">Question Title</th>
         <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
 
-    {{range .Answers}}
+    {{range $a:=.Answers}}
     <tr>
-        <td>{{.ID}}</td>
-        <td>{{.UserID}}</td>
-        <td>{{.Message}}</td>
-        <td>{{.User.FullName}}</td>
-        {{range .Categories}}
-            {{if .Categories.ID eq .CategoryID}}
-        <td>{{.Categories.ID.CategoryID}}</td>
-                {{end}}
+        <td>{{$a.ID}}</td>
+        <td>{{$a.Message}}</td>
+        {{$qid := $a.QuestionID}}
+        {{$qexists := true}}
+        {{range $.Questions}}
+            {{if eq .ID $qid}}
+                <td>{{.User.FullName}}</td>
+                {{$qexists = false}}
+            {{end}}
+        {{end}}
+        {{if $qexists}}
+            <td></td>
+        {{end}}
+
+        <td>{{$a.CreatedAt}}</td>
+
+        {{$id := $a.QuestionID}}
+        {{$exists := true}}
+        {{range $.Questions}}
+            {{if eq .ID $id}}
+                <td>{{.Title}}</td>
+                {{$exists = false}}
+            {{end}}
+        {{end}}
+        {{if $exists}}
+            <td></td>
         {{end}}
 
         <td><a href="/admin/answers/delete?id={{.ID}}">Delete</a></td>

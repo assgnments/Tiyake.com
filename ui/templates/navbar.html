@@ -70,6 +70,20 @@
             margin-bottom: 13.2vh;
         }
 
+
+        .mdropdown-item {
+            display: none;
+            z-index: 1;
+        }
+
+        .mdropdown:hover .mdropdown-item {
+            display: block;
+        }
+
+        .mdropdown:hover #searchicon {
+            display: none;
+        }
+
         #addquestion_form > .form-group {
             padding: 5px;
         }
@@ -100,32 +114,40 @@
                                 </li>
 
                             {{end}}
+
                         </ul>
-                        <form method="GET" action="/question/search" class="form-inline mt-2 mt-md-0"
-                              style="margin-right: 15px;">
-                            <!-- <i class="fas fa-search" aria-hidden="true"></i> -->
-                            <input type="text" name="searchable"/>
-                            <button class="btn btn-outline-primary text-primary my-2 my-sm-0" type="submit">Search
-                            </button>
-                            <select name="type" class="bootstrap-select">
-                                <option value="Any" selected="selected" style="color: #007bff; background-color: white !important;">Search By</option>
-                                <option value="Title" style="color: #007bff; background-color: white !important;">Title</option>
-                                <option value="Description" style="color: #007bff; background-color: white !important;">Description</option>
-                                <option value="Any" style="color: #007bff; background-color: white !important;">Any</option>
-                            </select>
+                        <div class="mdropdown">
+                            <img src="../assets/img/search.svg" id="searchicon" class="mr-3" data-toggle="dropdown"
+                                 alt="" width="25" height="25">
 
+                            <form method="GET" action="/question/search"
+                                  class="form-inline mt-2 mt-md-0"
+                                  style="margin-right: 15px;">
+                                <div class="mdropdown-item">
+                                    <select name="type" class="btn-outline-primary">
+                                        <option value="Any" hidden selected="selected"
+                                                style="color: #007bff; background-color: white !important;">Filter By
+                                        </option>
+                                        <option value="Title"
+                                                style="color: #007bff; background-color: white !important;">
+                                            Title
+                                        </option>
+                                        <option value="Description"
+                                                style="color: #007bff; background-color: white !important;">
+                                            Description
+                                        </option>
+                                        <option value="Any" style="color: #007bff; background-color: white !important;">
+                                            Any
+                                        </option>
+                                    </select>
+                                    <input class="" type="text" name="searchable"  style="padding: 5px;"/>
+                                    <button class="btn btn-outline-primary text-primary my-2 my-sm-0"
+                                            type="submit" style="margin-left: 0 !important;">Search
+                                    </button>
 
-                            <!-- <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" style="background-color: #007bff; border: #495057; !important;" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                    <button style="color: #007bff; background-color: white !important;" class="dropdown-item" type="button">Action</button>
-                                    <button style="color: #007bff; background-color: white !important;" class="dropdown-item" type="button">Another action</button>
-                                    <button style="color: #007bff; background-color: white !important;" class="dropdown-item" type="button">Something else here</button>
                                 </div>
-                            </div> -->
-                        </form>
+                            </form>
+                        </div>
 
                         <form method="GET" action="/question/new" class="form-inline mt-2 mt-md-0"
                               style="margin-right: 15px;">

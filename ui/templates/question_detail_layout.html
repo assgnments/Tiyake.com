@@ -47,32 +47,28 @@
                             <h5 class="mt-0">{{.Message}}</h5>
                             <p>{{readableDate .CreatedAt}}</p>
                         </div>
-                        <form method="POST" action="/question/upvote" class="form-inline mt-2 mt-md-0"
-                              style="margin-right: 15px;">
+                        <form method="POST" action="/question/upvote" class="form-inline mt-2 mt-md-0">
                             <button type="submit" class="btn btn-primary">
-                            <!-- <a href="#" style="text-decoration: none;"> -->
                                 <span>
-                                    <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                        <g id="upvote" class="icon_svg-stroke icon_svg-fill" stroke-width="1.5" stroke="#666" fill="none" fill-rule="evenodd" stroke-linejoin="round">
+                                    <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <g id="upvote" class="icon_svg-stroke icon_svg-fill" stroke-width="1.5"
+                                           stroke="#ffffff" fill="none" fill-rule="evenodd" stroke-linejoin="round">
                                             <polygon points="12 4 3 15 9 15 9 20 15 20 15 15 21 15"></polygon>
                                         </g>
                                     </svg>
                                 </span>
-                                <div class="ui_button_label_count_wrapper" style="display: inline-flex!important;
-                                align-items: baseline!important;
-                                justify-content: center!important;">
-                                    <span class="ui_button_label" id="__w2_w3VCCkFS28_label">Upvote</span>
-                                    <span class="ui_button_count ui_button_count--animated" aria-hidden="true" id="__w2_w3VCCkFS28_count_wrapper">
-                                        <span class="bullet"> · </span>
-                                        <span class="ui_button_stacked_counts u-flex-inline u-flex-column" id="__w2_w3VCCkFS28_count">
-                                            <span class="ui_button_count_optimistic_count u-block">2</span>
-                                            <!-- <span class="ui_button_count_optimistic_count u-block">3</span> -->
+                                <div class="" style="display: inline-flex!important;
+                                                     align-items: baseline!important;
+                                                     justify-content: center!important;">
+                                    <span class="" id="__w2_w3VCCkFS28_label">Upvote</span>
+                                    <span class="" aria-hidden="true" id="">
+                                            <span class="" name="votes">2</span>
                                         </span>
-                                    </span>            
+                                    </span>
                                 </div>
-                                                                      
                             </button>
-                            <!-- </a> -->
+
                         </form>
                     </div>
                 {{end}}

@@ -7,31 +7,37 @@
 {{define "admin.questions.content"}}
     <span class="h3 pl-2 m-2 ">Questions</span>
 
-    <table class="table table-striped ml-3 mt-3" id="table">
+    <table class="table table-striped mt-3" id="table">
         <thead>
         <tr>
             <th onclick="sortTable(0)" scope="col">ID</th>
             <th onclick="sortTable(1)" scope="col">Title</th>
             <th onclick="sortTable(2)" scope="col">Description</th>
             <th onclick="sortTable(3)" scope="col">Author</th>
-            <th onclick="sortTable(4)" scope="col">Category</th>
+            <th onclick="sortTable(4)" scope="col">Date</th>
+            <th onclick="sortTable(5)" scope="col">Category</th>
             <th scope="col"></th>
         </tr>
         </thead>
         <tbody>
 
-        {{range .Questions}}
+        {{range $q := .Questions}}
             <tr>
-                <td>{{.ID}}</td>
-                <td>{{.Title}}</td>
-                <td>{{.Description}}</td>
-                <td>{{.User.FullName}}</td>
-                {{$id:= .CategoryID}}
-                {{range .Categories}}
-                    <p>jalfjalf</p>
+                <td>{{$q.ID}}</td>
+                <td>{{$q.Title}}</td>
+                <td>{{$q.Description}}</td>
+                <td>{{$q.User.FullName}}</td>
+                <td>{{$q.CreatedAt}}</td>
+                {{$id := $q.CategoryID}}
+                {{$exists := true}}
+                {{range $.Categories}}
                     {{if eq .ID $id}}
                         <td>{{.Name}}</td>
+                        {{$exists = false}}
                     {{end}}
+                {{end}}
+                {{if $exists}}
+                    <td></td>
                 {{end}}
 
                 <td><a href="/admin/questions/delete?id={{.ID}}">Delete</a></td>

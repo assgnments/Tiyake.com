@@ -16,13 +16,13 @@
             <div class="form-group">
                 <input type="text" id="question_title" name="question_title"
                        class="form-control rounded-0 border-top-0 border-right-0 border-left-0" placeholder="Title"
-                       required="" value={{.FormInput.Values.Get "question_title" }}>
+                       required value={{.FormInput.Values.Get "question_title" }}>
             </div>
 
             <div class="form-group">
                 <textarea rows="6" id="question_description" name="question_description"
                           class="form-control rounded-0 border-top-0 border-right-0 border-left-0"
-                          placeholder="Description" required=""
+                          placeholder="Description" required
                           value={{.FormInput.Values.Get "question_description" }}></textarea>
             </div>
 
@@ -35,7 +35,7 @@
                 <span id="image_name" class="text-primary pl-3"> </span>
             </div>
             <div class="form-group">
-                <select name="category" id="category" class="btn form-group btn-outline-primary">
+                <select required name="category" id="category" class="btn form-group btn-outline-primary">
                     <option value='' disabled selected hidden>Choose A Category</option>
                     <option class="drpdwn_item" value='' hidden disabled selected>Choose a Category</option>
                     {{ range .Categories }}
