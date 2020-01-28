@@ -2,7 +2,6 @@ package repository
 
 import (
 	"errors"
-	"github.com/jinzhu/gorm"
 	"teyake/entity"
 	"teyake/question"
 )
@@ -13,8 +12,8 @@ type MockQuestionRepo struct {
 }
 
 // NewMockQuestionRepo returns new object of MockQuestionRepo
-func NewMockQuestionRepo(db *gorm.DB) question.QuestionRepository {
-	return &MockQuestionRepo{map[uint]*entity.Question{}}
+func NewMockQuestionRepo(questions map[uint]*entity.Question) question.QuestionRepository {
+	return &MockQuestionRepo{questions}
 }
 
 // Questions returns all customer Questions stored in the database

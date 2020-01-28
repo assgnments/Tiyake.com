@@ -1,7 +1,6 @@
 package repository
 
 import (
-	"github.com/jinzhu/gorm"
 	"teyake/category"
 	"teyake/entity"
 )
@@ -10,21 +9,9 @@ type MockCategoryRepo struct {
 	categories map[uint]*entity.Category
 }
 
-func NewMockCategoryRepo()  category.CategoryRepo{
-	return  MockCategoryRepo{ map[uint]*entity.Category{
-		0: {
-			Model: gorm.Model{
-				ID:0,
-			},
-			Name:  "Science",
-		},
-		1: {
-			Model: gorm.Model{
-				ID:0,
-			},
-			Name:  "Programming",
-		},
-	}}
+
+func NewMockCategoryRepo(categories map[uint]*entity.Category)  category.CategoryRepo{
+	return  MockCategoryRepo{ categories}
 }
 
 

@@ -2,7 +2,6 @@ package repository
 
 import (
 	"errors"
-	"github.com/jinzhu/gorm"
 	"teyake/entity"
 	"teyake/user"
 )
@@ -11,24 +10,9 @@ type MockUserRepo struct {
 	users map[uint]*entity.User
 }
 
-func NewMockUserRepo() user.UserRepository {
+func NewMockUserRepo( users map[uint]*entity.User) user.UserRepository {
 	return &MockUserRepo{
-		map[uint]*entity.User{
-			0: {
-				Model: gorm.Model{
-					ID: 0,
-				},
-				FullName: "Nathan",
-				RoleID:   0,
-			},
-			1: {
-				Model: gorm.Model{
-					ID: 1,
-				},
-				FullName: "Habib",
-				RoleID:   1,
-			},
-		},
+		users,
 	}
 }
 

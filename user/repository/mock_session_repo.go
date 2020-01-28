@@ -2,7 +2,6 @@ package repository
 
 import (
 	"errors"
-	"github.com/jinzhu/gorm"
 	"strconv"
 	"teyake/entity"
 	"teyake/user"
@@ -14,26 +13,9 @@ type MockSessionRepo struct {
 }
 
 // NewMockSessionRepo  returns a new MockSessionRepo object
-func NewMockSessionRepo() user.SessionRepository {
+func NewMockSessionRepo( sessions map[uint]*entity.Session) user.SessionRepository {
 	return &MockSessionRepo{
-		map[uint]*entity.Session{
-			0: {
-				Model: gorm.Model{
-					ID: 0,
-				},
-				UUID:       0,
-				SessionId:  "0",
-				SigningKey: []byte("demo_key"),
-			},
-			1: {
-				Model: gorm.Model{
-					ID: 1,
-				},
-				UUID:       1,
-				SessionId:  "1",
-				SigningKey: []byte("demo_key"),
-			},
-		},
+		sessions,
 	}
 }
 
