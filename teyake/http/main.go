@@ -27,7 +27,7 @@ import (
 )
 
 func createTables(dbconn *gorm.DB) []error {
-	errs := dbconn.CreateTable( &entity.UpVote{}).GetErrors()
+	errs := dbconn.CreateTable(&entity.Role{},&entity.User{},&entity.Session{},&entity.Question{},&entity.Category{},entity.Answer{},entity.UpVote{}).GetErrors()
 	if errs != nil {
 		return errs
 	}
@@ -72,16 +72,16 @@ func main() {
 	//Uncomment the following lines after you created a fresh teyake db
 	
 	//createTables(dbconn)
-
+	//
 	//roleServ.StoreRole(&entity.UserRoleMock)
 	//roleServ.StoreRole(&entity.AdminRoleMock)
-
+	//
 	//userService.StoreUser(&entity.UserMock)
 	//userService.StoreUser(&entity.UserMock2)
 	//userService.StoreUser(&entity.UserMock3)
 	//userService.StoreUser(&entity.UserMock4)
 	//userService.StoreUser(&entity.UserMock5)
-
+	//
 	//questionService.StoreQuestion(&entity.QuestionMock)
 	//questionService.StoreQuestion(&entity.QuestionMock2)
 	//questionService.StoreQuestion(&entity.QuestionMock3)
@@ -93,7 +93,7 @@ func main() {
 	//questionService.StoreQuestion(&entity.QuestionMock9)
 	//questionService.StoreQuestion(&entity.QuestionMock10)
 	//questionService.StoreQuestion(&entity.QuestionMock11)
-
+	//
 	//answerService.StoreAnswer(&entity.AnswerMock)
 	//answerService.StoreAnswer(&entity.AnswerMock2)
 	//answerService.StoreAnswer(&entity.AnswerMock3)
@@ -105,13 +105,13 @@ func main() {
 	//answerService.StoreAnswer(&entity.AnswerMock9)
 	//answerService.StoreAnswer(&entity.AnswerMock10)
 	//answerService.StoreAnswer(&entity.AnswerMock11)
-
+	//
 	//upvoteService.StoreUpVote(&entity.UpVoteMock)
-
+	//
 	//categoryService.StoreCategory(&entity.CategoryMock1)
 	//categoryService.StoreCategory(&entity.CategoryMock2)
 	//categoryService.StoreCategory(&entity.CategoryMock3)
-	
+	//
 
 	userHandler := handler.NewUserHandler(templ, userService, sessionService, roleServ, csrfSignKey)
 	indexHandler := handler.NewIndexHandler(templ, questionService, categoryService)

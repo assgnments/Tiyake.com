@@ -30,19 +30,16 @@ func NewAdminCategoryHandler(
 }
 
 func (ach *AdminCategoryHandler) AdminCategoriesHandler(w http.ResponseWriter, r *http.Request) {
-	categoryList := []entity.Category{}
-
 	categories, errs := ach.categoryService.Catagories()
 	if len(errs) > 0 {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
-	categoryList = categories
 
 	data := struct {
 		Categories []entity.Category
 	}{
-		Categories: categoryList,
+		Categories: categories,
 	}
 	ach.tmpl.ExecuteTemplate(w, "admin.categories.layout", data)
 }
