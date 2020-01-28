@@ -195,3 +195,70 @@ func writeFile(mf *multipart.File, fname string) error {
 	io.Copy(image, *mf)
 	return nil
 }
+
+func (questionHandler *QuestionHandler) UpvoteHandler(w http.ResponseWriter, r *http.Request) {
+	CSFRToken, err := token.NewCSRFToken(questionHandler.csrfSigningKey)
+	if err != nil {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+	categories, errs := questionHandler.categoryService.Catagories()
+	if len(errs) > 0 {
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
+	}
+	newQuestionForm := NewQuestionForm{
+
+		FormInput: form.Input{
+			CSFR:    CSFRToken,
+			Values:  r.PostForm,
+			VErrors: form.VaildationErros{},
+		},
+		Categories: categories,
+	}
+
+	if r.Method == http.MethodGet {
+		questionHandler.tmpl.ExecuteTemplate(w, "add_question.layout", newQuestionForm)
+		return
+	}
+	if util.IsParsableFormPost(w, r, questionHandler.csrfSigningKey) {
+		newQuestionForm.FormInput.ValidateRequiredFields(questionTitleKey, questionDescriptionKey, categoryFormKey)
+		if !newQuestionForm.FormInput.IsValid() {
+			questionHandler.tmpl.ExecuteTemplate(w, "add_question.layout", newQuestionForm)
+			return
+		}
+		categoryIdString := r.FormValue(categoryFormKey)
+		categoryId, err := strconv.Atoi(categoryIdString)
+		if err != nil {
+			newQuestionForm.FormInput.VErrors.Add(categoryFormKey, "Invalid category id")
+			questionHandler.tmpl.ExecuteTemplate(w, "add_question.layout", newQuestionForm)
+			return
+		}
+		multiPartFile, fileHeader, err := r.FormFile(questionImagekey)
+		img := ""
+		if err == nil {
+			defer multiPartFile.Close()
+			writeFile(&multiPartFile, fileHeader.Filename)
+			img = fileHeader.Filename
+		}
+
+		currentSession, _ := r.Context().Value(ctxUserSessionKey).(*entity.Session)
+		question := entity.Question{
+			Title:       r.FormValue(questionTitleKey),
+			Description: r.FormValue(questionDescriptionKey),
+			Image:       img,
+			UserID:      currentSession.UUID,
+			CategoryID:  uint(categoryId),
+			Answers:     nil,
+		}
+
+		savedQuestion, errs := questionHandler.questionService.StoreQuestion(&question)
+		if len(errs) > 0 {
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			return
+		}
+		url := fmt.Sprintf("/question?id=%d", savedQuestion.ID)
+		http.Redirect(w, r, url, http.StatusSeeOther)
+		return
+	}
+}

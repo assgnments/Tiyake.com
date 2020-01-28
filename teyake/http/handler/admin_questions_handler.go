@@ -46,7 +46,7 @@ func (aqh *AdminQuestionHandler) AdminQuestionHandler(w http.ResponseWriter, r *
 		Categories []entity.Category
 	}{
 		Questions:  questionList,
-		Categories: categories,
+		Categories:categories,
 	}
 	aqh.tmpl.ExecuteTemplate(w, "admin.questions.layout", data)
 }
