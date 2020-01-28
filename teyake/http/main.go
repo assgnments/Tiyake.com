@@ -27,23 +27,13 @@ import (
 )
 
 func createTables(dbconn *gorm.DB) []error {
-	errs := dbconn.CreateTable(&entity.User{}, &entity.Session{}, &entity.Role{}, &entity.Question{}, &entity.Answer{}, &entity.Category{}, &entity.UpVote{}).GetErrors()
+	errs := dbconn.CreateTable( &entity.UpVote{}).GetErrors()
 	if errs != nil {
 		return errs
 	}
 	return nil
 }
 
-//type justFilesFilesystem struct {
-//	fs http.FileSystem
-//}
-//func (fs justFilesFilesystem) Open(name string)(http.File,error){
-//	f,err := fs.fs.Open(name)
-//	if err!=nil{
-//		return nil,err
-//	}
-//	return newreaddir{f},nil
-//}
 func main() {
 	dbconn, err := gorm.Open("postgres", util.DBConnectString)
 	defer dbconn.Close()
@@ -54,7 +44,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
+ZZ
 	//Create a new csrf signing key for forms
 	csrfSignKey := []byte(token.GenerateRandomID(32))
 
@@ -119,6 +109,7 @@ func main() {
 	http.Handle("/", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(indexHandler.Index))))
 	http.Handle("/question", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionHandler.QuestionHandler))))
 	http.Handle("/question/new", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionHandler.NewQuestion))))
+	http.Handle("/question/upvote",userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionHandler.UpvoteHandler))))
 	http.HandleFunc("/login", userHandler.Login)
 	http.HandleFunc("/signup", userHandler.SignUp)
 	http.HandleFunc("/question/search", indexHandler.SearchQuestions)
