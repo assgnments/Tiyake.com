@@ -47,6 +47,7 @@ type Answer struct {
 	User       User   `gorm:"many2many:user;"`
 	Message    string `gorm:"type:varchar(1000);not null"`
 	QuestionID uint
+	UpVote []UpVote
 }
 
 type UpVote struct {
@@ -54,5 +55,6 @@ type UpVote struct {
 	UserID   uint
 	User     User `gorm:"many2many:user;"`
 	AnswerID uint
-	Answer   Answer `gorm:"many2many:answer;"`
+	//Answer   Answer `gorm:"many2many:answer;"`
+
 }

@@ -54,3 +54,6 @@ func (qs *QuestionService) SearchByTitle(searchable string) ([]entity.Question, 
 func (qs *QuestionService) SearchByDescription(searchable string) ([]entity.Question, []error) {
 	return qs.QuestionRepo.SearchByDescription(searchable)
 }
+func (qs *QuestionService) SearchByID(searcheable string) ([]entity.Question, []error) {
+	return qs.QuestionRepo.SearchByID(searcheable)
+}

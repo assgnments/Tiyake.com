@@ -20,7 +20,7 @@ func NewAnswerGormRepo(db *gorm.DB) answer.AnswerRepository {
 // Answers returns all customer Answers stored in the database
 func (ansRepo *AnswerGormRepo) Answers() ([]entity.Answer, []error) {
 	cmnts := []entity.Answer{}
-	errs := ansRepo.conn.Find(&cmnts).GetErrors()
+	errs := ansRepo.conn.Set("gorm:auto_preload", true).Find(&cmnts).GetErrors()
 	if len(errs) > 0 {
 		return nil, errs
 	}

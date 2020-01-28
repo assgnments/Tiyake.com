@@ -27,7 +27,7 @@ import (
 )
 
 func createTables(dbconn *gorm.DB) []error {
-	errs := dbconn.CreateTable( &entity.UpVote{}).GetErrors()
+	errs := dbconn.CreateTable( &entity.User{},&entity.Answer{},&entity.Role{},&entity.Session{},&entity.Category{},&entity.Question{},&entity.UpVote{}).GetErrors()
 	if errs != nil {
 		return errs
 	}
@@ -72,16 +72,16 @@ func main() {
 	//Uncomment the following lines after you created a fresh teyake db
 	
 	//createTables(dbconn)
-
+	//
 	//roleServ.StoreRole(&entity.UserRoleMock)
 	//roleServ.StoreRole(&entity.AdminRoleMock)
-
+	//
 	//userService.StoreUser(&entity.UserMock)
 	//userService.StoreUser(&entity.UserMock2)
 	//userService.StoreUser(&entity.UserMock3)
 	//userService.StoreUser(&entity.UserMock4)
 	//userService.StoreUser(&entity.UserMock5)
-
+	//
 	//questionService.StoreQuestion(&entity.QuestionMock)
 	//questionService.StoreQuestion(&entity.QuestionMock2)
 	//questionService.StoreQuestion(&entity.QuestionMock3)
@@ -93,7 +93,7 @@ func main() {
 	//questionService.StoreQuestion(&entity.QuestionMock9)
 	//questionService.StoreQuestion(&entity.QuestionMock10)
 	//questionService.StoreQuestion(&entity.QuestionMock11)
-
+	//
 	//answerService.StoreAnswer(&entity.AnswerMock)
 	//answerService.StoreAnswer(&entity.AnswerMock2)
 	//answerService.StoreAnswer(&entity.AnswerMock3)
@@ -105,9 +105,9 @@ func main() {
 	//answerService.StoreAnswer(&entity.AnswerMock9)
 	//answerService.StoreAnswer(&entity.AnswerMock10)
 	//answerService.StoreAnswer(&entity.AnswerMock11)
-
+	//
 	//upvoteService.StoreUpVote(&entity.UpVoteMock)
-
+	//
 	//categoryService.StoreCategory(&entity.CategoryMock1)
 	//categoryService.StoreCategory(&entity.CategoryMock2)
 	//categoryService.StoreCategory(&entity.CategoryMock3)
@@ -120,6 +120,8 @@ func main() {
 	adminquestionHandler := handler.NewAdminQuestionHandler(templ, questionService, categoryService, csrfSignKey)
 	adminanswerHandler := handler.NewAdminAnswerHandler(templ, answerService, questionService, csrfSignKey)
 	admincategoryHandler := handler.NewAdminCategoryHandler(templ, categoryService, csrfSignKey)
+	questionAPIHandler := handler.NewQuestionAPIHandler(templ,questionService,answerService,categoryService)
+	profileHandler := handler.NewProfileHandler(templ, questionService, categoryService)
 
 	http.Handle("/admin", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(userHandler.Admin))))
 	http.Handle("/admin/users", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(adminHandler.AdminUsers))))
@@ -142,9 +144,16 @@ func main() {
 	http.Handle("/question", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionHandler.QuestionHandler))))
 	http.Handle("/question/new", userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionHandler.NewQuestion))))
 	http.Handle("/question/upvote",userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionHandler.UpvoteHandler))))
+	http.Handle("/question/search",userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(indexHandler.SearchQuestions))))
+	//http.Handle("/api/questions",userHandler.Authenticated(userHandler.Authorized(http.HandlerFunc(questionAPIHandler.GetQuestionAPI))))
+
+	http.HandleFunc("/user", profileHandler.UserQuestions)
+	http.HandleFunc("/api/questions",questionAPIHandler.GetQuestionAPI)
 	http.HandleFunc("/login", userHandler.Login)
 	http.HandleFunc("/signup", userHandler.SignUp)
-	http.HandleFunc("/question/search", indexHandler.SearchQuestions)
+
+
+
 	http.Handle("/logout", userHandler.Authenticated(http.HandlerFunc(userHandler.Logout)))
 	http.ListenAndServe(":8181", nil)
 }

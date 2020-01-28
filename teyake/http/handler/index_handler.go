@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 	"strconv"
@@ -68,9 +67,7 @@ func (indexHandler *IndexHandler) Index(w http.ResponseWriter, r *http.Request) 
 func (indexHandler *IndexHandler) SearchQuestions(w http.ResponseWriter, r *http.Request) {
 	searchtype := r.URL.Query().Get("type")
 	search := r.URL.Query().Get("searchable")
-	fmt.Println(search)
-	fmt.Println(("^^is the search query text"))
-	fmt.Println(("search type is " + searchtype))
+
 	questions := []entity.Question{}
 
 	if searchtype == "Title" {
@@ -101,3 +98,4 @@ func (indexHandler *IndexHandler) SearchQuestions(w http.ResponseWriter, r *http
 
 	indexHandler.tmpl.ExecuteTemplate(w, "index.layout", data)
 }
+

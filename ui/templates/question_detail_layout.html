@@ -4,6 +4,7 @@
 
         <div class="row">
             <div class="col-lg-12">
+
                 {{with .Question}}
                     <h1 class="mt-4">{{.Title}}</h1>
 
@@ -40,15 +41,18 @@
                         </form>
                     </div>
                 </div>
-                {{range .Question.Answers}}
+
+                {{range $i,$v :=.Question.Answers}}
+
                     <div class="media mb-4">
                         <div class="media-body">
                             {{.User.FullName}}
                             <h5 class="mt-0">{{.Message}}</h5>
                             <p>{{readableDate .CreatedAt}}</p>
                         </div>
-                        <form method="POST" action="/question/upvote" class="form-inline mt-2 mt-md-0">
-                            <button type="submit" class="btn btn-primary">
+
+
+                        <a class="btn btn-primary" href="/question/upvote?id={{.ID}}&qid={{.QuestionID}}">
                                 <span>
                                     <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -58,18 +62,17 @@
                                         </g>
                                     </svg>
                                 </span>
-                                <div class="" style="display: inline-flex!important;
+                            <div class="" style="display: inline-flex!important;
                                                      align-items: baseline!important;
                                                      justify-content: center!important;">
-                                    <span class="" id="__w2_w3VCCkFS28_label">Upvote</span>
-                                    <span class="" aria-hidden="true" id="">
-                                            <span class="" name="votes">2</span>
+                                <span class="" id="">{{len .UpVote}} </span>
+                                <span class="" aria-hidden="true" id="">
                                         </span>
-                                    </span>
-                                </div>
-                            </button>
+                                </span>
+                            </div>
+                        </a>
 
-                        </form>
+
                     </div>
                 {{end}}
 

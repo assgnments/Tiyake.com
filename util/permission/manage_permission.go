@@ -24,6 +24,18 @@ var authorities = authority{
 		roles:   []string{"USER"},
 		methods: []string{"POST", "GET"},
 	},
+	"/question/upvote": permission{
+		roles:   []string{"USER"},
+		methods: []string{"POST", "GET"},
+	},
+	"/question/search": permission{
+		roles:   []string{"USER"},
+		methods: []string{"POST", "GET"},
+	},
+	"/api/questions": permission{
+		roles:   []string{"USER"},
+		methods: []string{"POST", "GET"},
+	},
 	"/logout": permission{
 		roles:   []string{"USER", "ADMIN"},
 		methods: []string{"POST"},

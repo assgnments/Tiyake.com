@@ -15,4 +15,5 @@ type QuestionRepository interface {
 	SearchQuestions(searchable string) ([]entity.Question, []error)
 	SearchByTitle(searchable string) ([]entity.Question, []error)
 	SearchByDescription(searchable string) ([]entity.Question, []error)
+	SearchByID(searcheable string) ([]entity.Question, []error)
 }

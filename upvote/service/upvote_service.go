@@ -24,7 +24,9 @@ func (as *UpVoteService) UpVotes() ([]entity.UpVote, []error) {
 func (as *UpVoteService) UpVote(id uint) (*entity.UpVote, []error) {
 	return as.UpVoteRepo.UpVote(id)
 }
-
+func (as *UpVoteService) UpVoteByAnswer(id uint) (*[]entity.UpVote, []error) {
+	return as.UpVoteRepo.UpVoteByAnswer(id)
+}
 // DeleteUpVote deletes a given UpVote
 func (as *UpVoteService) DeleteUpVote(id uint) (*entity.UpVote, []error) {
 	return as.UpVoteRepo.DeleteUpVote(id)

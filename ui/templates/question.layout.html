@@ -10,7 +10,11 @@
                 {{end}}
                 <div class="card-body rounded">
                     <h3 class="card-text">{{.Title}}</h3>
-                    <p class="card-text">by {{.User.FullName}}</p>
+                    <form method="POST" action="/user">
+                        <input type="hidden" name="user_id" value={{.User.ID}}>
+                        {{/*<input type="hidden" name="csrf" value="{{ .CSRF }}"/>*/}}
+                        <button class="btn btn-outline-primary text-primary my-2 my-sm-0"  type="submit">by {{.User.FullName}}</button>
+                    </form>
                     <p class="card-text"><small class="text-muted">{{.Description}}</small></p>
                     <p class="card-text"><small class="text-muted">{{readableDate .CreatedAt}}</small></p>
                     <p class="card-text"><small class="text-muted">{{len .Answers}} Answers</small></p>

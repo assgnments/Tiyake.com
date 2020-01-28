@@ -1,0 +1,17 @@
+{{ define "user.profile.layout" }}
+
+    {{ template "navbar.layout" .Categories}}
+    <div class="p-5 text-primary">{{$q1:= index .Questions 0}}
+        <div class="h3">Name: {{$q1.User.FullName}}</div>
+        <div class="h3">Email Address : {{$q1.User.Email}}</div>
+        <div class="h3">Joined :  {{readableDate $q1.User.CreatedAt}}</div>
+        <div class="h3">{{len $.Questions}} Questions Asked</div>
+        <div class="h3">Questions : </div>
+
+    </div>
+    {{range .Questions}}
+        {{template "question.layout" .}}
+    {{end}}
+    {{ template "footer.layout"  }}
+
+{{ end }}

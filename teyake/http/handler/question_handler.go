@@ -85,6 +85,7 @@ func (questionHandler *QuestionHandler) QuestionHandler(w http.ResponseWriter, r
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		}
 		answerForm := questionHandler.getQuestion(w, r)
+
 		if answerForm == nil {
 			return
 		}
@@ -103,6 +104,7 @@ func (questionHandler *QuestionHandler) NewQuestion(w http.ResponseWriter, r *ht
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
+
 	newQuestionForm := NewQuestionForm{
 
 		FormInput: form.Input{
@@ -158,8 +160,10 @@ func (questionHandler *QuestionHandler) NewQuestion(w http.ResponseWriter, r *ht
 		return
 	}
 }
+
 func (questionHandler *QuestionHandler) getQuestion(w http.ResponseWriter, r *http.Request) *QuestionForm {
 	questionIdString := r.URL.Query().Get(questionKey)
+
 	questionId, err := strconv.Atoi(questionIdString)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
@@ -168,10 +172,12 @@ func (questionHandler *QuestionHandler) getQuestion(w http.ResponseWriter, r *ht
 
 	question, _ := questionHandler.questionService.Question(uint(questionId))
 	CSFRToken, err := token.NewCSRFToken(questionHandler.csrfSigningKey)
+
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return nil
 	}
+
 	return &QuestionForm{
 		Question: *question,
 		FormInput: form.Input{
@@ -197,68 +203,33 @@ func writeFile(mf *multipart.File, fname string) error {
 }
 
 func (questionHandler *QuestionHandler) UpvoteHandler(w http.ResponseWriter, r *http.Request) {
-	CSFRToken, err := token.NewCSRFToken(questionHandler.csrfSigningKey)
-	if err != nil {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		return
-	}
-	categories, errs := questionHandler.categoryService.Catagories()
-	if len(errs) > 0 {
-		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-		return
-	}
-	newQuestionForm := NewQuestionForm{
-
-		FormInput: form.Input{
-			CSFR:    CSFRToken,
-			Values:  r.PostForm,
-			VErrors: form.VaildationErros{},
-		},
-		Categories: categories,
-	}
 
 	if r.Method == http.MethodGet {
-		questionHandler.tmpl.ExecuteTemplate(w, "add_question.layout", newQuestionForm)
-		return
-	}
-	if util.IsParsableFormPost(w, r, questionHandler.csrfSigningKey) {
-		newQuestionForm.FormInput.ValidateRequiredFields(questionTitleKey, questionDescriptionKey, categoryFormKey)
-		if !newQuestionForm.FormInput.IsValid() {
-			questionHandler.tmpl.ExecuteTemplate(w, "add_question.layout", newQuestionForm)
-			return
-		}
-		categoryIdString := r.FormValue(categoryFormKey)
-		categoryId, err := strconv.Atoi(categoryIdString)
+		IdString := r.URL.Query().Get(questionKey)
+		answerId, err := strconv.Atoi(IdString)
 		if err != nil {
-			newQuestionForm.FormInput.VErrors.Add(categoryFormKey, "Invalid category id")
-			questionHandler.tmpl.ExecuteTemplate(w, "add_question.layout", newQuestionForm)
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			return
 		}
-		multiPartFile, fileHeader, err := r.FormFile(questionImagekey)
-		img := ""
-		if err == nil {
-			defer multiPartFile.Close()
-			writeFile(&multiPartFile, fileHeader.Filename)
-			img = fileHeader.Filename
+		QIdString := r.URL.Query().Get("qid")
+		questionId, err := strconv.Atoi(QIdString)
+		if err != nil {
+			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+			return
 		}
 
 		currentSession, _ := r.Context().Value(ctxUserSessionKey).(*entity.Session)
-		question := entity.Question{
-			Title:       r.FormValue(questionTitleKey),
-			Description: r.FormValue(questionDescriptionKey),
-			Image:       img,
-			UserID:      currentSession.UUID,
-			CategoryID:  uint(categoryId),
-			Answers:     nil,
+		upvote := entity.UpVote{
+			UserID:  currentSession.UUID ,
+			AnswerID: uint(answerId),
 		}
-
-		savedQuestion, errs := questionHandler.questionService.StoreQuestion(&question)
+		_, errs := questionHandler.upvoteService.StoreUpVote(&upvote)
 		if len(errs) > 0 {
 			http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			return
 		}
-		url := fmt.Sprintf("/question?id=%d", savedQuestion.ID)
+
+		url := fmt.Sprintf("/question?id=%d",questionId)
 		http.Redirect(w, r, url, http.StatusSeeOther)
-		return
 	}
 }

@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"strconv"
 	"teyake/entity"
 	"teyake/question"
 
@@ -56,7 +57,7 @@ func (questionRepo *QuestionGormRepo) StoreQuestion(question *entity.Question) (
 }
 func (questionRepo *QuestionGormRepo) QuestionByCategory(categoryId uint) ([]entity.Question, []error) {
 	questions := []entity.Question{}
-	errs := questionRepo.conn.Find(&questions, "category_id=?", categoryId).GetErrors()
+	errs := questionRepo.conn.Set("gorm:auto_preload", true).Find(&questions, "category_id=?", categoryId).GetErrors()
 	return questions, errs
 }
 
@@ -76,5 +77,15 @@ func (questionRepo *QuestionGormRepo) SearchByTitle(searcheable string) ([]entit
 func (questionRepo *QuestionGormRepo) SearchByDescription(searcheable string) ([]entity.Question, []error) {
 	questions := []entity.Question{}
 	errs := questionRepo.conn.Set("gorm:auto_preload", true).Where("Description like ?", "%"+searcheable+"%").Find(&questions).GetErrors()
+	return questions, errs
+}
+func (questionRepo *QuestionGormRepo) SearchByID(searcheable string) ([]entity.Question, []error) {
+	questions := []entity.Question{}
+	uid, err := strconv.Atoi(searcheable)
+	if err != nil {
+		panic(err)
+	}
+
+	errs := questionRepo.conn.Set("gorm:auto_preload", true).Where("user_id = ?", uid).Find(&questions).GetErrors()
 	return questions, errs
 }

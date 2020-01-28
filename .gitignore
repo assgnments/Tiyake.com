@@ -1,3 +1,13 @@
 #Ignore database connect string (DBConnectString) in util
 
 util/db.go
+ui/assets/img/JagAC.gif
+ui/assets/img/1570805393048_photo-1570469755478-93b66a3f1c83
+ui/assets/img/4be5464d-c09a-476f-b8db-258ccd63401a.jpeg
+ui/assets/img/photo1190108766430931047.jpg
+
+ui/templates/question.layout.html
+ui/templates/question_detail_layout.html
+ui/templates/navbar.html
+
+.gitignore
