@@ -44,7 +44,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-ZZ
+
 	//Create a new csrf signing key for forms
 	csrfSignKey := []byte(token.GenerateRandomID(32))
 
